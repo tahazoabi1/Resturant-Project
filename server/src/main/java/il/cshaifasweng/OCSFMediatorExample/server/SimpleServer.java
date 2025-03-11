@@ -9,11 +9,23 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class SimpleServer extends AbstractServer {
 	private List<MenuItem> MenuItemDatabase = new ArrayList<>();
+	public static ArrayList<ConnectionToClient> Subscribers = new ArrayList<>();
 
 	public SimpleServer(int port) {
 		super(port);
+	}
+
+	public void sendToAll(Warning warning) {
+		try {
+			for (ConnectionToClient Subscriber : Subscribers) {
+				Subscriber.sendToClient(warning);
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
@@ -24,13 +36,10 @@ public class SimpleServer extends AbstractServer {
 
 		if (msgString.startsWith("#warning")) {
 			Warning warning = new Warning("Warning from server!");
-			try {
-				client.sendToClient(warning);
-				System.out.format("Sent warning to client %s\n", client.getInetAddress().getHostAddress());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		//	Object message=warning.getMessage();
+            sendToAll(warning);
+            System.out.format("Sent warning to client %s\n", client.getInetAddress().getHostAddress());
+        }
 
 		if (msgString.equals("get all MenuItems")) {
 			System.out.println("\n====== Processing Get All MenuItems ======");
@@ -128,4 +137,5 @@ public class SimpleServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+
 }

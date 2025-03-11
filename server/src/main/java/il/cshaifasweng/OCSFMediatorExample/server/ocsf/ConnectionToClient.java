@@ -4,6 +4,8 @@
 
 package il.cshaifasweng.OCSFMediatorExample.server.ocsf;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -350,5 +352,8 @@ public class ConnectionToClient extends Thread
     }
     catch(IOException e) {}
   }
+
+
+
 }
 // End of ConnectionToClient class

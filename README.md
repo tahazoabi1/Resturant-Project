@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 # Resturant-Project
+=======
+>>>>>>> 8eec514 (Initial commit)
 # OCSF Mediator Example
 
 ## Structure
@@ -11,4 +14,8 @@ Pay attention to the three modules:
 1. Run Maven install **in the parent project**.
 2. Run the server using the exec:java goal in the server module.
 3. Run the client using the javafx:run goal in the client module.
+<<<<<<< HEAD
 4. Press the button and see what happens!
+=======
+4. Press the button and see what happens!
+>>>>>>> 8eec514 (Initial commit)

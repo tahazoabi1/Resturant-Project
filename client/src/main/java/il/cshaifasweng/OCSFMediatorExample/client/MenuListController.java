@@ -15,7 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import static il.cshaifasweng.OCSFMediatorExample.client.App.switchScreen;
+import static il.cshaifasweng.OCSFMediatorExample.client.Main.switchScreen;
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.getClient;
 
 public class MenuListController {

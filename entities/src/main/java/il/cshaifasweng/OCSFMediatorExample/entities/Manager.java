@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "managers")
+//@Table(name = "managers")
 public class Manager extends Worker {
     private static final long serialVersionUID = 1L;
 
@@ -18,8 +18,8 @@ public class Manager extends Worker {
 
     public Manager() {}
 
-    public Manager(int employeeID, String position, double salary, int branchID, Branch managedBranch, List<Worker> managedWorkers) {
-        super(employeeID, position, salary, branchID);
+    public Manager(int employeeID, String position, double salary, int branchID, String name, String phoneNumber, String email, String password, Branch managedBranch, List<Worker> managedWorkers) {
+        super(employeeID, position, salary, branchID, name, phoneNumber, email, password);
         this.managedBranch = managedBranch;
         this.managedWorkers = managedWorkers;
     }

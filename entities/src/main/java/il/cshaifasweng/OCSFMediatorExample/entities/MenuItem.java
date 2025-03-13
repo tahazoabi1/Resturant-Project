@@ -15,7 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "menuitems")
+@Table(name = "menu_items")
 public class MenuItem implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -63,6 +63,9 @@ public class MenuItem implements Serializable {
 
     public String getName() {
         return this.name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setTitle(String name) {

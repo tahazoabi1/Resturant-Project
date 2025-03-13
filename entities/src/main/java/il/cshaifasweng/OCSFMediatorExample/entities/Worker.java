@@ -4,14 +4,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "workers")
-public class Worker implements Serializable {
+@DiscriminatorValue("Worker")  // This value is stored in the 'discriminator' column in the 'users' table
+public class Worker extends User implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
 
     @Column(name = "employee_id", unique = true, nullable = false)
     private int employeeID;
@@ -27,21 +22,15 @@ public class Worker implements Serializable {
 
     public Worker() {}
 
-    public Worker(int employeeID, String position, double salary, int branchID) {
+    public Worker(int employeeID, String position, double salary, int branchID, String name, String phoneNumber, String email, String password) {
+        super(name, phoneNumber, email, password);  // Call the parent constructor
         this.employeeID = employeeID;
         this.position = position;
         this.salary = salary;
         this.branchID = branchID;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    // Getters and Setters
     public int getEmployeeID() {
         return employeeID;
     }

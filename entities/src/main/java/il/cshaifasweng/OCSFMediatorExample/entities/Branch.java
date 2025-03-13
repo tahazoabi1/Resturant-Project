@@ -1,8 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-import jakarta.persistence.*;
-
 import javax.persistence.*;
+import javax.persistence.Table;
 import java.util.List;
 
 @Entity
@@ -18,11 +17,11 @@ public class Branch {
     @Column(nullable = false)
     private String location;
 
-    @OneToMany(mappedBy = "branch")
+    @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY)
     private List<HostingArea> hostingAreas;
 
     @OneToMany(mappedBy = "branch")
-    private List<Item> items;
+    private List<MenuItem> items;
 
     // Constructors
     public Branch() {}
@@ -45,7 +44,7 @@ public class Branch {
     public List<HostingArea> getHostingAreas() { return hostingAreas; }
     public void setHostingAreas(List<HostingArea> hostingAreas) { this.hostingAreas = hostingAreas; }
 
-    public List<Item> getItems() { return items; }
-    public void setItems(List<Item> items) { this.items = items; }
+    public List<MenuItem> getItems() { return items; }
+    public void setItems(List<MenuItem> items) { this.items = items; }
 }
 

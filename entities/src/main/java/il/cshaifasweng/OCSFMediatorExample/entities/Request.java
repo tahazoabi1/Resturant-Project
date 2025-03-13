@@ -3,9 +3,9 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 public class Request {
     private int id;
     private String status;
-    private Item item;
+    private MenuItem item;
 
-    public Request(int id, String status, Item item) {
+    public Request(int id, String status, MenuItem item) {
         this.id = id;
         this.status = status;
         this.item = item;
@@ -20,7 +20,7 @@ public class Request {
     public void setId(int id) { this.id = id; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
-    public Item getItem() { return item; }
-    public void setItem(Item item) { this.item = item; }
+    public MenuItem getItem() { return item; }
+    public void setItem(MenuItem item) { this.item = item; }
 
 }

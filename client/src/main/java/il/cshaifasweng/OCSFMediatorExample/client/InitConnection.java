@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import static il.cshaifasweng.OCSFMediatorExample.client.App.switchScreen;
+import static il.cshaifasweng.OCSFMediatorExample.client.Main.switchScreen;
 
 public class InitConnection {
     @FXML
@@ -16,7 +16,6 @@ public class InitConnection {
 
     @FXML
     void initConnection(ActionEvent event) {
-        // הגדרת כתובת ופורט
         SimpleClient.newHost = this.host.getText();
         try {
             SimpleClient.newPort = Integer.parseInt(this.port.getText());
@@ -26,11 +25,11 @@ public class InitConnection {
         }
 
         // יצירת לקוח
-        App.client = SimpleClient.getClient();
+        Main.client = SimpleClient.getClient();
 
         try {
             // פתיחת חיבור לשרת
-            App.client.openConnection();
+            Main.client.openConnection();
             System.out.println("Connected to server at " + SimpleClient.newHost + ":" + SimpleClient.newPort);
 
             switchScreen("Menu List");

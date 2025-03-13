@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-import static il.cshaifasweng.OCSFMediatorExample.client.App.switchScreen;
+import static il.cshaifasweng.OCSFMediatorExample.client.Main.switchScreen;
 
 public class SecondaryController {
 

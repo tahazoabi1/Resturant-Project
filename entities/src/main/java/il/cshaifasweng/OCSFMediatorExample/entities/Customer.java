@@ -5,14 +5,9 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "customers")
-public class Customer implements Serializable {
+@DiscriminatorValue("Customer")  // This value is stored in the 'discriminator' column in the 'users' table
+public class Customer extends User implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
 
     @Column(name = "address")
     private String address;
@@ -21,26 +16,20 @@ public class Customer implements Serializable {
     private String preferredPaymentMethod;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<Order> orderHistory;
+    private List<Tables> tableReserved;  // List of tables reserved by the customer
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<Reservation> reservations;
+    private List<Order> orderHistory;  // List of orders placed by the customer
 
     public Customer() {}
 
-    public Customer(String address, String preferredPaymentMethod) {
+    public Customer(String address, String preferredPaymentMethod, String name, String phoneNumber, String email, String password) {
+        super(name, phoneNumber, email, password);  // Call the parent constructor
         this.address = address;
         this.preferredPaymentMethod = preferredPaymentMethod;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    // Getters and Setters
     public String getAddress() {
         return address;
     }
@@ -57,6 +46,14 @@ public class Customer implements Serializable {
         this.preferredPaymentMethod = preferredPaymentMethod;
     }
 
+    public List<Tables> getTableReserved() {
+        return tableReserved;
+    }
+
+    public void setTableReserved(List<Tables> tableReserved) {
+        this.tableReserved = tableReserved;
+    }
+
     public List<Order> getOrderHistory() {
         return orderHistory;
     }
@@ -65,11 +62,4 @@ public class Customer implements Serializable {
         this.orderHistory = orderHistory;
     }
 
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
-    }
 }

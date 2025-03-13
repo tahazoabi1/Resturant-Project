@@ -1,10 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-import jakarta.persistence.*;
-
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -43,4 +39,3 @@ public class Dietitian extends User {
     public List<Item> getItems() { return items; }
     public void setItems(List<Item> items) { this.items = items; }
 }
-

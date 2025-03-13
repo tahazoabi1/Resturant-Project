@@ -1,7 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-import jakarta.persistence.*;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -48,4 +46,3 @@ public class Branch {
     public List<Item> getItems() { return items; }
     public void setItems(List<Item> items) { this.items = items; }
 }
-

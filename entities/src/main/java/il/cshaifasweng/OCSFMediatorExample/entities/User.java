@@ -1,7 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-import jakarta.persistence.*;
-
 import javax.persistence.*;
 
 @Entity
@@ -49,4 +47,3 @@ public abstract class User {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 }
-

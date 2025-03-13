@@ -1,9 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-import jakarta.persistence.*;
-
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "hostesses")
@@ -20,4 +17,3 @@ public class Hostess extends Worker implements Reservation {
         System.out.println("Table " + table.getId() + " is now free.");
     }
 }
-

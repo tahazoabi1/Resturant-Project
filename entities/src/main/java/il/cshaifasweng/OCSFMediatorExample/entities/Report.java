@@ -1,7 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-import jakarta.persistence.*;
-
 import javax.persistence.*;
 
 @Entity
@@ -35,4 +33,3 @@ public class Report {
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
 }
-

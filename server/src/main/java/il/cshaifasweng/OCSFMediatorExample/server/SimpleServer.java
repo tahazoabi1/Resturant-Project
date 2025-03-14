@@ -36,13 +36,43 @@ public class SimpleServer extends AbstractServer {
 
 		if (msgString.startsWith("#warning")) {
 			Warning warning = new Warning("Warning from server!");
-		//	Object message=warning.getMessage();
-            sendToAll(warning);
-            System.out.format("Sent warning to client %s\n", client.getInetAddress().getHostAddress());
-        }
+			//	Object message=warning.getMessage();
+			sendToAll(warning);
+			System.out.format("Sent warning to client %s\n", client.getInetAddress().getHostAddress());
+		}
 
 		if (msgString.equals("get all MenuItems")) {
 			System.out.println("\n====== Processing Get All MenuItems ======");
+			try {
+				System.out.println("Requesting items from database...");
+				List<MenuItem> temp = ConnectToDataBase.getAllMenuItems();
+				System.out.println("Retrieved " + (temp != null ? temp.size() : 0) + " items from database");
+
+				if (temp != null && !temp.isEmpty()) {
+					System.out.println("Items found:");
+					for (MenuItem item : temp) {
+						System.out.println("  - " + item.getName() + " ($" + item.getPrice() + ")");
+					}
+				} else {
+					System.out.println("No items found in database");
+				}
+
+				client.sendToClient(temp);
+				System.out.println("Sent items to client");
+			} catch (Exception e) {
+				System.err.println("Error retrieving menu items: " + e.getMessage());
+				e.printStackTrace();
+				try {
+					Warning warning = new Warning("Failed to retrieve menu items: " + e.getMessage());
+					client.sendToClient(warning);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+
+		if (msgString.equals("get all branches")) {
+			System.out.println("\n====== Processing Get All branches ======");
 			try {
 				System.out.println("Requesting items from database...");
 				List<MenuItem> temp = ConnectToDataBase.getAllMenuItems();

@@ -5,38 +5,25 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-//@Table(name = "managers")
+@DiscriminatorValue("ManagerWorker")
 public class Manager extends Worker {
-    private static final long serialVersionUID = 1L;
 
-    @OneToOne
-    @JoinColumn(name = "managed_branch_id")
-    private Branch managedBranch;
+    private List<Request> requests;
 
-    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL)
-    private List<Worker> managedWorkers;
+    @OneToMany
+    public List<Request> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(List<Request> requests) {
+        this.requests = requests;
+    }
+
 
     public Manager() {}
 
-    public Manager(int employeeID, String position, double salary, int branchID, String name, String phoneNumber, String email, String password, Branch managedBranch, List<Worker> managedWorkers) {
-        super(employeeID, position, salary, branchID, name, phoneNumber, email, password);
-        this.managedBranch = managedBranch;
-        this.managedWorkers = managedWorkers;
+    public Manager(int employeeID, double salary, Branch branch, String name, String phoneNumber, String email, String password, Branch managedBranch, List<Worker> managedWorkers) {
+        super(salary, branch, name, phoneNumber, email, password);
     }
 
-    public Branch getManagedBranch() {
-        return managedBranch;
-    }
-
-    public void setManagedBranch(Branch managedBranch) {
-        this.managedBranch = managedBranch;
-    }
-
-    public List<Worker> getManagedWorkers() {
-        return managedWorkers;
-    }
-
-    public void setManagedWorkers(List<Worker> managedWorkers) {
-        this.managedWorkers = managedWorkers;
-    }
 }

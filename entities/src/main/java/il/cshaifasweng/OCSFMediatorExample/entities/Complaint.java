@@ -79,4 +79,12 @@ public class Complaint {
     public void setSolution(String solution) {
         this.solution = solution;
     }
+
+    public ServiceWorker getServiceWorker() {
+        return serviceWorker;
+    }
+
+    public void setServiceWorker(ServiceWorker serviceWorker) {
+        this.serviceWorker = serviceWorker;
+    }
 }

@@ -52,11 +52,11 @@ public class Customer extends User implements Serializable {
         this.preferredPaymentMethod = preferredPaymentMethod;
     }
 
-    public List<Tables> getTableReserved() {
+    public List<Tables> getTablesReserved() {
         return tableReserved;
     }
 
-    public void setTableReserved(List<Tables> tableReserved) {
+    public void setTablesReserved(List<Tables> tableReserved) {
         this.tableReserved = tableReserved;
     }
 

@@ -7,14 +7,14 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("ManagerWorker")
 public class Manager extends Worker {
-
+    //menu
+    @OneToMany(mappedBy = "manager")
     private List<Request> requests;
 
-    @OneToMany
-    public List<Request> getRequests() {
-        return requests;
-    }
 
+
+    @OneToMany(mappedBy = "manager")
+    private List<Worker> workers;
     public void setRequests(List<Request> requests) {
         this.requests = requests;
     }
@@ -22,8 +22,20 @@ public class Manager extends Worker {
 
     public Manager() {}
 
-    public Manager(int employeeID, double salary, Branch branch, String name, String phoneNumber, String email, String password, Branch managedBranch, List<Worker> managedWorkers) {
+    public Manager(double salary, Branch branch, String name, String phoneNumber, String email, String password) {
         super(salary, branch, name, phoneNumber, email, password);
     }
 
+    public List<Request> getRequests() {
+        return requests;
+    }
+
+
+    public List<Worker> getWorkers() {
+        return workers;
+    }
+
+    public void setWorkers(List<Worker> workers) {
+        this.workers = workers;
+    }
 }

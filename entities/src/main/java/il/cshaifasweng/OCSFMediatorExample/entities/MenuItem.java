@@ -42,20 +42,10 @@ public class MenuItem implements Serializable {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @ManyToMany
-    @JoinTable(
-            name = "order_menuitem",
-            joinColumns = @JoinColumn(name = "menu_item_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id")
-    )
-    private List<Branch> branch;
+    @ManyToMany(mappedBy = "items")
+    private List<Branch> branches;
 
-    @ManyToMany
-    @JoinTable(
-            name = "order_menu_items",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "menu_item_id")
-    )
+    @ManyToMany(mappedBy = "menuItems")
     private List<Order> orders;
 
     public MenuItem() {

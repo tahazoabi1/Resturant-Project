@@ -78,4 +78,20 @@ public class Tables {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+    public List<ReservationReport> getReservationReports() {
+        return reservationReports;
+    }
+
+    public void setReservationReports(List<ReservationReport> reservationReports) {
+        this.reservationReports = reservationReports;
+    }
+
+    public Branch getBranch() {
+        return branch;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
 }

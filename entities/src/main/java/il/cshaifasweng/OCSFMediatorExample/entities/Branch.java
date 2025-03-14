@@ -35,8 +35,8 @@ public class Branch {
     @ManyToMany
     @JoinTable(
             name = "branch_menuitem",
-            joinColumns = @JoinColumn(name = "menu_item_id"),
-            inverseJoinColumns = @JoinColumn(name = "branch_id")
+            joinColumns = @JoinColumn(name = "branch_id"),
+            inverseJoinColumns = @JoinColumn(name = "menu_item_id")
     )
     private List<MenuItem> items;
 

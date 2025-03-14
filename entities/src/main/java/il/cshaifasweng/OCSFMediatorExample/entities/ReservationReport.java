@@ -1,6 +1,8 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
@@ -19,10 +21,10 @@ public class ReservationReport {
     private Tables table;
 
     @Column(name = "date")
-    private String date;
+    private LocalDate date;
 
     @Column(name = "hour")
-    private int hour;
+    private LocalTime hour;
 
 
     public int getId() {
@@ -49,19 +51,19 @@ public class ReservationReport {
         this.table = table;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public int getHour() {
+    public LocalTime getHour() {
         return hour;
     }
 
-    public void setHour(int hour) {
+    public void setHour(LocalTime hour) {
         this.hour = hour;
     }
 }

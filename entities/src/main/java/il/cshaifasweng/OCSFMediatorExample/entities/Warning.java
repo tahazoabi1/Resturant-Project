@@ -13,6 +13,9 @@ public class Warning implements Serializable {
 	private String message;
 	private LocalTime time;
 
+	public Warning() {
+	}
+
 	public String getMessage() {
 		return message;
 	}

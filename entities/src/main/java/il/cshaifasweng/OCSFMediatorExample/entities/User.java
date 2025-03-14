@@ -20,7 +20,7 @@ public abstract class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "phone_number", nullable = true)
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber; // Changed to String to accommodate phone number formatting
 
     // Constructors

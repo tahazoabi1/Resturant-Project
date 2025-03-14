@@ -15,6 +15,10 @@ public class Worker extends User implements Serializable {
     @JoinColumn(name = "branch_id")
     private Branch branch;
 
+    @ManyToOne
+    @JoinColumn(name = "manager_id")
+    private Manager manager;
+
     public Worker() {}
 
     public Worker(double salary, Branch branch, String name, String phoneNumber, String email, String password) {

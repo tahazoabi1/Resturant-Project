@@ -50,11 +50,11 @@ public class HostingArea{
         this.tableCount = tableCount;
     }
 
-    public List<Tables> gettable() {
+    public List<Tables> getTables() {
         return table;
     }
 
-    public void settable(List<Tables> table) {
+    public void setTables(List<Tables> table) {
         this.table = table;
     }
 

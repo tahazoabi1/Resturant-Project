@@ -38,8 +38,7 @@ public class Order {
 
     public Order() {}
 
-    public Order(int id, double totalPrice, String status, boolean isAccepted, Branch branch, Customer customer) {
-        this.id = id;
+    public Order(double totalPrice, String status, boolean isAccepted, Branch branch, Customer customer) {
         this.totalPrice = totalPrice;
         this.status = status;
         this.isAccepted = isAccepted;

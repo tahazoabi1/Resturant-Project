@@ -20,8 +20,10 @@ public class Request {
     private String status; // Waiting, Accept, Reject
 
     @ManyToOne()
+    @JoinColumn(name = "changed_item_id")
     private MenuItem changedItem;
 
     @ManyToOne
+    @JoinColumn(name = "manager_id")
     private Manager manager;
 }

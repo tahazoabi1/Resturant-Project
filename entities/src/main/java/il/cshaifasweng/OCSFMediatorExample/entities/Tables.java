@@ -29,6 +29,9 @@ public class Tables {
     @JoinColumn(name = "customer_id")  // Foreign key to the customer who reserved the table
     private Customer customer;  // The customer who reserved the table
 
+    @OneToMany(mappedBy = "table")
+    private List<ReservationReport> reservationReports;
+
     // Constructors, getters, setters
     public Tables() {}
 

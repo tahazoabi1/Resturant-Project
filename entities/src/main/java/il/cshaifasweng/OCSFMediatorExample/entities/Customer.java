@@ -21,6 +21,12 @@ public class Customer extends User implements Serializable {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Order> orderHistory;  // List of orders placed by the customer
 
+    @OneToMany(mappedBy = "customer")
+    private List<ReservationReport> reservationReports;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Complaint> complaints;
+
     public Customer() {}
 
     public Customer(String address, String preferredPaymentMethod, String name, String phoneNumber, String email, String password) {

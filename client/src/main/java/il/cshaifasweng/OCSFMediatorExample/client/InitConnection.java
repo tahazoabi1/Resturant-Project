@@ -16,6 +16,7 @@ public class InitConnection {
 
     @FXML
     void initConnection(ActionEvent event) {
+        // הגדרת כתובת ופורט
         SimpleClient.newHost = this.host.getText();
         try {
             SimpleClient.newPort = Integer.parseInt(this.port.getText());

@@ -1,49 +1,73 @@
+
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.List;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "menu_items")
 public class MenuItem implements Serializable {
     private static final long serialVersionUID = 1L;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
+    @Column(
+            name = "id"
+    )
     private int id;
-
-    @Column(name = "name")
+    @Column(
+            name = "name"
+    )
     private String name;
-
-    @Column(name = "ingredients")
+    @Column(
+            name = "ingredients"
+    )
     private String ingredients;
-
-    @Column(name = "preferences")
+    @Column(
+            name = "preferences"
+    )
     private String preferences;
+    @Column(
+            name = "price"
+    )
+    private double price;
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "price")
-    private double price;
+    @ManyToMany
+    @JoinTable(
+            name = "order_menuitem",
+            joinColumns = @JoinColumn(name = "menu_item_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id")
+    )
+    private List<Branch> branch;
 
-    public MenuItem() {}
+    @ManyToMany
+    @JoinTable(
+            name = "order_menu_items",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "menu_item_id")
+    )
+    private List<Order> orders;
 
-    public MenuItem(int id, String name, String ingredients, String preferences, double price) {
-        this.id = id;
+    public MenuItem() {
+    }
+
+    public MenuItem(int id, String name, String ingredients, String preferences,Double price) {
         this.name = name;
         this.ingredients = ingredients;
         this.preferences = preferences;
         this.price = price;
     }
 
-    // Getters and Setters
     public int getId() {
         return this.id;
     }
@@ -56,12 +80,43 @@ public class MenuItem implements Serializable {
         return this.name;
     }
 
+    public void setTitle(String name) {
+        this.name = name;
+    }
+
+    public String getingredients() {
+        return this.ingredients;
+    }
+
+    public void setingredients(String ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public void setpreferences(String preferences) {
+        this.preferences = preferences;
+    }
+
+    public String getpreferences() {
+        return this.preferences;
+    }
+
+    public Double getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(double Price) {
+        this.price = Price;
+    }
+    public String toString() {
+        return String.format("MenuItem ID: %d\nTitle: %s\ningredients: %s\npreferences: %s%s\nprice: %s", this.id, this.name, this.ingredients, this.preferences, this.price);
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
     public String getIngredients() {
-        return this.ingredients;
+        return ingredients;
     }
 
     public void setIngredients(String ingredients) {
@@ -69,31 +124,11 @@ public class MenuItem implements Serializable {
     }
 
     public String getPreferences() {
-        return this.preferences;
+        return preferences;
     }
 
     public void setPreferences(String preferences) {
         this.preferences = preferences;
     }
-
-    public String getImageUrl() {
-        return this.imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public double getPrice() {
-        return this.price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("MenuItem ID: %d\nName: %s\nIngredients: %s\nPreferences: %s\nPrice: %.2f", this.id, this.name, this.ingredients, this.preferences, this.price);
-    }
 }
+

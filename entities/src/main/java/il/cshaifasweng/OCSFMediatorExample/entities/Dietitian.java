@@ -2,45 +2,26 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 
 //import jakarta.persistence.*;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
 import java.util.List;
+import il.cshaifasweng.OCSFMediatorExample.entities.MenuItem;
 
 @Entity
-//@Table(name = "dietitians")
-@PrimaryKeyJoinColumn(name = "user_id")
-public class Dietitian extends User {
+@DiscriminatorValue("DietitianWorker")
+public class Dietitian extends Worker {
 
-//    @OneToMany(mappedBy = "dietitian")
-    private List<MenuItem> items;
 
     // Constructors
-    public Dietitian() {}
-
-    public Dietitian(String name, String phoneNumber, String email, String password) {
-        super(name, phoneNumber, email, password);
+    public Dietitian() {
     }
 
-    // Methods for item management
-    public void changeItemPrice(MenuItem item, double newPrice) {
-        item.setPrice(newPrice);
-    }
-
-    public void changeItemName(MenuItem item, String newName) {
-        item.setName(newName);
-    }
-
-    public void deleteItem(MenuItem item) {
-        items.remove(item);
+    public Dietitian(double salary, Branch branch, String name, String phoneNumber, String email, String password) {
+        super(salary, branch, name, phoneNumber, email, password);
     }
 
     public void sendRequest(MenuItem item) {
         System.out.println("Sending request for item: " + item.getName());
     }
-
-    // Getters and Setters
-    public List<MenuItem> getItems() { return items; }
-    public void setItems(List<MenuItem> items) { this.items = items; }
 }
+
 

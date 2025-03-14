@@ -1,26 +1,27 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
+import javax.persistence.*;
+import java.nio.MappedByteBuffer;
+import java.util.List;
+
+@Entity
+@Table(name = "change_requests")
 public class Request {
-    private int id;
-    private String status;
-    private MenuItem item;
 
-    public Request(int id, String status, MenuItem item) {
-        this.id = id;
-        this.status = status;
-        this.item = item;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-generate primary key
+    @Column(name = "id")  // Name the column in the table as 'id'
+    private Long id;  // or int, depending on your requirement
 
-    public void acceptRequest() { this.status = "Accepted"; }
-    public void declineRequest() { this.status = "Declined"; }
-    public void sendRequest() { this.status = "waiting"; }
+    @Column(name = "description")
+    private String  Description;
 
+    @Column(name = "status")
+    private String status; // Waiting, Accept, Reject
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-    public MenuItem getItem() { return item; }
-    public void setItem(MenuItem item) { this.item = item; }
+    @ManyToOne()
+    private MenuItem changedItem;
 
+    @ManyToOne
+    private Manager manager;
 }

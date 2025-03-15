@@ -13,13 +13,6 @@ public class Manager extends Worker {
 
 
 
-    @OneToMany(mappedBy = "manager")
-    private List<Worker> workers;
-    public void setRequests(List<Request> requests) {
-        this.requests = requests;
-    }
-
-
     public Manager() {}
 
     public Manager(double salary, Branch branch, String name, String phoneNumber, String email, String password) {
@@ -30,12 +23,4 @@ public class Manager extends Worker {
         return requests;
     }
 
-
-    public List<Worker> getWorkers() {
-        return workers;
-    }
-
-    public void setWorkers(List<Worker> workers) {
-        this.workers = workers;
-    }
 }

@@ -1,12 +1,13 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "branches")
-public class Branch {
-
+public class Branch implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -39,7 +40,6 @@ public class Branch {
             inverseJoinColumns = @JoinColumn(name = "menu_item_id")
     )
     private List<MenuItem> items;
-
     // Constructors
     public Branch() {}
 

@@ -1,8 +1,9 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
-import il.cshaifasweng.OCSFMediatorExample.entities.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -24,6 +25,21 @@ public class ConnectToDataBase {
             Configuration configuration = new Configuration();
 
             configuration.addAnnotatedClass(MenuItem.class);
+            configuration.addAnnotatedClass(Branch.class);
+            configuration.addAnnotatedClass(Complaint.class);
+            configuration.addAnnotatedClass(Customer.class);
+            configuration.addAnnotatedClass(Dietitian.class);
+            configuration.addAnnotatedClass(Hostess.class);
+            configuration.addAnnotatedClass(HostingArea.class);
+            configuration.addAnnotatedClass(Manager.class);
+            configuration.addAnnotatedClass(Order.class);
+            configuration.addAnnotatedClass(Report.class);
+            configuration.addAnnotatedClass(Request.class);
+            configuration.addAnnotatedClass(ReservationReport.class);
+            configuration.addAnnotatedClass(ServiceWorker.class);
+            configuration.addAnnotatedClass(Tables.class);
+            configuration.addAnnotatedClass(User.class);
+            configuration.addAnnotatedClass(Worker.class);
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties())
                     .build();
@@ -31,6 +47,39 @@ public class ConnectToDataBase {
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }
         return sessionFactory;
+    }
+
+    public static List<Branch> getAllBranches() throws Exception {
+        System.out.println("Getting all branches from database...");
+        Session session = null;
+        List<Branch> branches;
+
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Branch> query = builder.createQuery(Branch.class);
+            Root<Branch> root = query.from(Branch.class);
+            query.select(root);
+
+            branches = session.createQuery(query).getResultList();
+            System.out.println("Found " + (branches != null ? branches.size() : 0) + " branches");
+
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println("Error in getAllBranches: " + e.getMessage());
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return branches;
     }
 
     public static List<MenuItem> getAllMenuItems() throws Exception {
@@ -138,20 +187,20 @@ public class ConnectToDataBase {
         }
     }
 
-    public static Session initializeDatabase() {
+    public static void initializeDatabase() throws HibernateException {
+        Session session = null;
+        Transaction transaction = null;
         try {
             SessionFactory sessionFactory = getSessionFactory();
             session = sessionFactory.openSession();
-            session.beginTransaction();
-            session.getTransaction().commit();
-        } catch (Exception exception) {
-            if (session != null) {
-                session.getTransaction().rollback();
-            }
-            System.err.println("An error occurred, changes have been rolled back.");
-            exception.printStackTrace();
+            transaction = session.beginTransaction();
+            transaction.commit();  // Commit changes to make sure they are applied
+        } catch (HibernateException e) {
+            if (transaction != null) transaction.rollback();  // Ensure rollback on error
+            throw new HibernateException("Failed to initialize database", e);
+        } finally {
+            if (session != null && session.isOpen()) session.close();  // Ensure session is closed
         }
-        return session;
     }
 
     public static void closeSession() {

@@ -5,10 +5,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="menuListPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.MenuListController">
+<AnchorPane fx:id="menuListPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.MenuListController">
    <children>
-      <ListView fx:id="list_of_menu_items" layoutX="200.0" layoutY="100.0" prefHeight="200.0" prefWidth="554.0" />
-      <Button fx:id="updateButton" layoutX="436.0" layoutY="371.0" mnemonicParsing="false" onAction="#updateButtonClicked" text="Update Item"/>
-      <TextField fx:id="priceField" layoutX="218.0" layoutY="326.0" prefHeight="26.0" prefWidth="507.0" />
+      <ListView fx:id="list_of_menu_items" layoutX="73.0" layoutY="82.0" prefHeight="200.0" prefWidth="554.0" />
+      <Button fx:id="updateButton" layoutX="309.0" layoutY="345.0" mnemonicParsing="false" onAction="#updateButtonClicked" text="Update Item" />
+      <TextField fx:id="priceField" layoutX="97.0" layoutY="300.0" prefHeight="26.0" prefWidth="507.0" />
    </children>
 </AnchorPane>

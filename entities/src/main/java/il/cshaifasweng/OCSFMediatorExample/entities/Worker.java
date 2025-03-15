@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 @Entity
 @DiscriminatorValue("Worker")  // This value is stored in the 'discriminator' column in the 'users' table
-@Table()
 public class Worker extends User implements Serializable {
 
     @Column(name = "salary")
@@ -14,10 +13,6 @@ public class Worker extends User implements Serializable {
     @ManyToOne
     @JoinColumn(name = "branch_id")
     private Branch branch;
-
-    @ManyToOne
-    @JoinColumn(name = "manager_id")
-    private Manager manager;
 
     public Worker() {}
 

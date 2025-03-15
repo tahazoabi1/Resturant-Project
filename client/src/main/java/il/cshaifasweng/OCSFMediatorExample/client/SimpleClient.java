@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
+import il.cshaifasweng.OCSFMediatorExample.entities.Branch;
 import il.cshaifasweng.OCSFMediatorExample.entities.MenuItem;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 import org.greenrobot.eventbus.EventBus;
@@ -35,10 +36,23 @@ public class SimpleClient extends AbstractClient {
 				System.out.println("Received " + menuItems.size() + " menu items");
 				EventBus.getDefault().post(menuItems);
 			}
+			if (!list.isEmpty() && list.get(0) instanceof Branch) {
+				@SuppressWarnings("unchecked")
+				List<Branch> branches = (List<Branch>) list;
+				System.out.println("Received " + branches.size() + " branches");
+				EventBus.getDefault().post(branches);
+			}
+			else{
+				System.err.println("got list but the the wanted one or maybe empty");
+
+			}
 		}
 		else if (msg instanceof MenuItem) {
 			System.out.println("Received single MenuItem");
 			EventBus.getDefault().post(msg);
+		}
+		else{
+			System.err.println("Got nothing from the server");
 		}
 	}
 

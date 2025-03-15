@@ -1,4 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
+import il.cshaifasweng.OCSFMediatorExample.entities.Branch;
 import il.cshaifasweng.OCSFMediatorExample.entities.MenuItem;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
@@ -75,25 +76,26 @@ public class SimpleServer extends AbstractServer {
 			System.out.println("\n====== Processing Get All branches ======");
 			try {
 				System.out.println("Requesting items from database...");
-				List<MenuItem> temp = ConnectToDataBase.getAllMenuItems();
+				List<Branch> temp = ConnectToDataBase.getAllBranches();
 				System.out.println("Retrieved " + (temp != null ? temp.size() : 0) + " items from database");
 
 				if (temp != null && !temp.isEmpty()) {
 					System.out.println("Items found:");
-					for (MenuItem item : temp) {
-						System.out.println("  - " + item.getName() + " ($" + item.getPrice() + ")");
+					for (Branch branch : temp) {
+						System.out.println("  - " + branch.getName() + ")");
 					}
 				} else {
 					System.out.println("No items found in database");
 				}
 
 				client.sendToClient(temp);
-				System.out.println("Sent items to client");
+				System.out.println("Sent branches to client");
+				System.out.println("Sending branches to client: " + temp);
 			} catch (Exception e) {
-				System.err.println("Error retrieving menu items: " + e.getMessage());
+				System.err.println("Error retrieving branches: " + e.getMessage());
 				e.printStackTrace();
 				try {
-					Warning warning = new Warning("Failed to retrieve menu items: " + e.getMessage());
+					Warning warning = new Warning("Failed to retrieve branches: " + e.getMessage());
 					client.sendToClient(warning);
 				} catch (IOException ex) {
 					ex.printStackTrace();

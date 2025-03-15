@@ -34,8 +34,8 @@ public class Main extends Application {
 		primaryStage.getIcons().add(icon);
 		// Set the title and scene for the stage
 		primaryStage.setTitle("Restaurant");
-		primaryStage.setWidth(1024);
-		primaryStage.setHeight(768);
+		primaryStage.setWidth(700);
+		primaryStage.setHeight(600);
 		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
 
@@ -55,11 +55,11 @@ public class Main extends Application {
 					}
 				});
 				break;
-			case "Tables":
+			case "SelectBranchScreen":
 				Platform.runLater(() -> {
-					setWindowTitle("Tables");
+					setWindowTitle("Select Branch");
 					try {
-						setContent("secondary");
+						setContent("selected-branch");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

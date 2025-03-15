@@ -48,6 +48,32 @@ public class ConnectToDataBase {
         }
         return sessionFactory;
     }
+    public static void addBranch(String name, String location, String description, String imageUrl) {
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            // Create a new Branch object
+            Branch branch = new Branch(name, location, description, imageUrl);
+
+            // Save the branch
+            session.save(branch);
+
+            transaction.commit();
+            System.out.println("Branch added successfully: " + name);
+
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            System.err.println("Error adding branch: " + e.getMessage());
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
+
 
     public static List<Branch> getAllBranches() throws Exception {
         System.out.println("Getting all branches from database...");
@@ -114,6 +140,7 @@ public class ConnectToDataBase {
         }
         return items;
     }
+
 
     public static void updateMenuItemPrice(int id, double newPrice) throws Exception {
         System.out.println("Updating price for item ID: " + id);
@@ -186,6 +213,55 @@ public class ConnectToDataBase {
             }
         }
     }
+
+    public static void addWorker(String name, String phoneNumber, String email, String password, double salary, Branch branch) {
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            // Create new worker object
+            Worker worker = new Worker(salary, branch, name, phoneNumber, email, password);
+
+            // Save worker to the users table (due to SINGLE_TABLE inheritance)
+            session.save(worker);
+
+            transaction.commit();
+            System.out.println("Worker added successfully!");
+
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            System.err.println("Error adding worker: " + e.getMessage());
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
+    public static Branch getBranchByName(String branchName) {
+        Session session = null;
+        Branch branch = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            session.beginTransaction();
+
+            branch = (Branch) session.createQuery("FROM Branch WHERE name = :branchName")
+                    .setParameter("branchName", branchName)
+                    .uniqueResult();
+
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println("Error finding branch: " + e.getMessage());
+        } finally {
+            if (session != null) session.close();
+        }
+
+        return branch;
+    }
+
+
 
     public static void initializeDatabase() throws HibernateException {
         Session session = null;

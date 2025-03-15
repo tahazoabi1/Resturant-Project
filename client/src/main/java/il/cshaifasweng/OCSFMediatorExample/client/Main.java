@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
-
+import il.cshaifasweng.OCSFMediatorExample.server.ConnectToDataBase;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,7 +26,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// Create the root group for the scene
-		Parent root = FXMLLoader.load(getClass().getResource("init.fxml"));
+
+		Parent root = FXMLLoader.load(getClass().getResource("Register.fxml"));
 		Main.primaryStage = primaryStage;
 		Scene scene = new Scene(root);
 
@@ -65,6 +66,10 @@ public class Main extends Application {
 					}
 				});
 				break;
+
+			case "Register":
+				showRegisterScreen();
+				break;
 		}
 	}
 
@@ -83,4 +88,16 @@ public class Main extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
+
+	public static void showRegisterScreen() {
+		Platform.runLater(() -> {
+			try {
+				setContent("Register"); // This should match your Register.fxml file name
+				setWindowTitle("Worker Registration");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+	}
+
 }

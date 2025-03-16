@@ -27,6 +27,9 @@ public class Branch implements Serializable {
     @Column(name = "image_url")  // Added image_url column
     private String imageUrl;
 
+    @Column(name = "opening_hours") // Added opening hours column
+    private String openingHours;
+
     @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY)
     private List<HostingArea> hostingAreas;
 
@@ -43,12 +46,15 @@ public class Branch implements Serializable {
     // Constructors
     public Branch() {}
 
-    public Branch(String name, String location, String description, String imageUrl) {
+    public Branch(String name, String location, String description, String imageUrl, String openingHours) {
         this.name = name;
         this.location = location;
         this.description = description;
         this.imageUrl = imageUrl;
+        this.openingHours = openingHours;
     }
+
+
 
 
 
@@ -71,6 +77,9 @@ public class Branch implements Serializable {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getOpeningHours() { return openingHours; }
+    public void setOpeningHours(String openingHours) { this.openingHours = openingHours; }
 
     public List<HostingArea> getHostingAreas() { return hostingAreas; }
     public void setHostingAreas(List<HostingArea> hostingAreas) { this.hostingAreas = hostingAreas; }

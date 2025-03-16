@@ -27,7 +27,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		// Create the root group for the scene
 
-		Parent root = FXMLLoader.load(getClass().getResource("Register.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("browseMenu.fxml"));
 		Main.primaryStage = primaryStage;
 		Scene scene = new Scene(root);
 
@@ -70,6 +70,11 @@ public class Main extends Application {
 			case "Register":
 				showRegisterScreen();
 				break;
+
+
+			case "CustomerRegister":
+				showCustomerRegisterScreen();
+				break;
 		}
 	}
 
@@ -99,5 +104,17 @@ public class Main extends Application {
 			}
 		});
 	}
+
+	public static void showCustomerRegisterScreen() {
+		Platform.runLater(() -> {
+			try {
+				setContent("Customer"); // This should match Customer.fxml
+				setWindowTitle("Customer Registration");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+	}
+
 
 }

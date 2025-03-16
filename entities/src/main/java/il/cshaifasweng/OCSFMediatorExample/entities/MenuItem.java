@@ -42,7 +42,7 @@ public class MenuItem implements Serializable {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @ManyToMany(mappedBy = "items")
+    @ManyToMany(mappedBy = "items", fetch = FetchType.EAGER)
     private List<Branch> branches;
 
     @ManyToMany(mappedBy = "menuItems")
@@ -119,6 +119,16 @@ public class MenuItem implements Serializable {
 
     public void setPreferences(String preferences) {
         this.preferences = preferences;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+    public List<Branch> getBranches() { return branches; }
+
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
 

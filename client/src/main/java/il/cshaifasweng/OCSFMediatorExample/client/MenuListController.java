@@ -38,6 +38,7 @@ public class MenuListController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     @FXML

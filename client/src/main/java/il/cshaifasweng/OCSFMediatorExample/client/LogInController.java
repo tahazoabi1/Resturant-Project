@@ -48,6 +48,7 @@ public class LogInController {
         Main.user = user;
         if (user!=null) {
             javafx.application.Platform.runLater(() -> {
+                NavigationController.getInstance().updateLogInStatus();
                 showAlert("Success", "Logged in successfully!");
             });
         }

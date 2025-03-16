@@ -13,8 +13,12 @@ import il.cshaifasweng.OCSFMediatorExample.server.ConnectToDataBase;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 
 public class Main extends Application {
+
 
 	public static User user = null;
 	private static Scene scene;
@@ -50,7 +54,6 @@ public class Main extends Application {
 		switch (screenName) {
 			case "Menu List":
 				Platform.runLater(() -> {
-					setWindowTitle("Menu List");
 					try {
 						setContent("primary");
 					} catch (IOException e) {
@@ -60,7 +63,6 @@ public class Main extends Application {
 				break;
 			case "SelectBranchScreen":
 				Platform.runLater(() -> {
-					setWindowTitle("Select Branch");
 					try {
 						setContent("selected-branch");
 					} catch (IOException e) {
@@ -70,7 +72,6 @@ public class Main extends Application {
 				break;
 			case "Log In":
 				Platform.runLater(() -> {
-					setWindowTitle("Log In");
 					try {
 						setContent("log-in");
 					} catch (IOException e) {
@@ -80,7 +81,6 @@ public class Main extends Application {
 				break;
 			case "Register":
 				Platform.runLater(() -> {
-					setWindowTitle("Register");
 					try {
 						setContent("Register");
 					} catch (IOException e) {
@@ -88,12 +88,29 @@ public class Main extends Application {
 					}
 				});
 				break;
+			case "First Page":
+				Platform.runLater(() -> {
+					try {
+						setContent("first-page");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
+			case "navigation":
+				Platform.runLater(() -> {
+					try {
+						setContent("navigation");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
 		}
 	}
 
 	public static void setWindowTitle(String title) {
 		primaryStage.setTitle(title);
 	}
+
 
 	public static void setContent(String pageName) throws IOException {
 		Parent root = null;
@@ -107,15 +124,5 @@ public class Main extends Application {
 		primaryStage.show();
 	}
 
-	public static void showRegisterScreen() {
-		Platform.runLater(() -> {
-			try {
-				setContent("Register"); // This should match your Register.fxml file name
-				setWindowTitle("Worker Registration");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		});
-	}
 
 }

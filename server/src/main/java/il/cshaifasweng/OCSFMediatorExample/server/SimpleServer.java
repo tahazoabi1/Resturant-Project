@@ -146,9 +146,9 @@ public class SimpleServer extends AbstractServer {
 				System.out.println("Trying to log in...");
 
 				// Update in database
+
 				User user = ConnectToDataBase.Login(email, password);
 				System.out.println("Got the User");
-
 
 				client.sendToClient(user);
 				System.out.println("Sent user to client");

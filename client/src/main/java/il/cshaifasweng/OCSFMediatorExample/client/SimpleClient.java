@@ -3,6 +3,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.Branch;
 import il.cshaifasweng.OCSFMediatorExample.entities.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 import org.greenrobot.eventbus.EventBus;
 
@@ -49,6 +50,10 @@ public class SimpleClient extends AbstractClient {
 		}
 		else if (msg instanceof MenuItem) {
 			System.out.println("Received single MenuItem");
+			EventBus.getDefault().post(msg);
+		}
+		else if (msg instanceof User){
+			System.out.println("Received User from the server");
 			EventBus.getDefault().post(msg);
 		}
 		else{

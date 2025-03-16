@@ -23,6 +23,8 @@ public abstract class User {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber; // Changed to String to accommodate phone number formatting
 
+    @Column(name = "is_sign_in", nullable = false)
+    private boolean isSignedIn; // Changed to String to accommodate phone number formatting
     // Constructors
     public User() {}
 
@@ -31,6 +33,7 @@ public abstract class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
+        this.isSignedIn = false;
     }
 
     // Getters and Setters
@@ -48,4 +51,15 @@ public abstract class User {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public void signIn(){
+        this.isSignedIn = true;
+    }
+    public void signOut(){
+        this.isSignedIn = false;
+    }
+
+    public boolean isSignedIn() {
+        return isSignedIn;
+    }
 }

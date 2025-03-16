@@ -33,7 +33,7 @@ public class InitConnection {
             Main.client.openConnection();
             System.out.println("Connected to server at " + SimpleClient.newHost + ":" + SimpleClient.newPort);
 
-            switchScreen("Menu List");
+            switchScreen("Log In");
         } catch (IOException e) {
             showError("Connection Failed", "Failed to connect to the server. Please check the host and port.");
             e.printStackTrace();

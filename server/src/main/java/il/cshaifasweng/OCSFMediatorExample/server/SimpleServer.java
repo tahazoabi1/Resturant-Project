@@ -1,9 +1,11 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 import il.cshaifasweng.OCSFMediatorExample.entities.Branch;
 import il.cshaifasweng.OCSFMediatorExample.entities.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
+import il.cshaifasweng.OCSFMediatorExample.server.ConnectToDataBase;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -40,9 +42,7 @@ public class SimpleServer extends AbstractServer {
 			//	Object message=warning.getMessage();
 			sendToAll(warning);
 			System.out.format("Sent warning to client %s\n", client.getInetAddress().getHostAddress());
-		}
-
-		if (msgString.equals("get all MenuItems")) {
+		} else if (msgString.equals("get all MenuItems")) {
 			System.out.println("\n====== Processing Get All MenuItems ======");
 			try {
 				System.out.println("Requesting items from database...");
@@ -70,9 +70,7 @@ public class SimpleServer extends AbstractServer {
 					ex.printStackTrace();
 				}
 			}
-		}
-
-		if (msgString.equals("get all branches")) {
+		} else if (msgString.equals("get all branches")) {
 			System.out.println("\n====== Processing Get All branches ======");
 			try {
 				System.out.println("Requesting items from database...");
@@ -101,9 +99,7 @@ public class SimpleServer extends AbstractServer {
 					ex.printStackTrace();
 				}
 			}
-		}
-
-		if (msgString.startsWith("Update price")) {
+		} else if (msgString.startsWith("Update price")) {
 			System.out.println("\n====== Processing Price Update ======");
 			try {
 				String[] parts = msgString.split("@");
@@ -136,6 +132,38 @@ public class SimpleServer extends AbstractServer {
 				}
 			}
 			System.out.println("====== End Price Update ======\n");
+		} else if (msgString.startsWith("trying To LogIn")) {
+			System.out.println("\n====== Processing Login Update ======");
+			try {
+				String[] parts = msgString.split("#");
+				if (parts.length != 3) {
+					throw new IllegalArgumentException("Invalid Email or Password format");
+				}
+
+				String email = parts[1];
+				String password = parts[2];
+
+				System.out.println("Trying to log in...");
+
+				// Update in database
+				User user = ConnectToDataBase.Login(email, password);
+				System.out.println("Got the User");
+
+
+				client.sendToClient(user);
+				System.out.println("Sent user to client");
+
+			} catch (Exception e) {
+				System.err.println("Error Log in" + e.getMessage());
+				e.printStackTrace();
+				try {
+					Warning warning = new Warning("Failed to Log in " + e.getMessage());
+					client.sendToClient(warning);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+			System.out.println("====== End Log in ======\n");
 		}
 	}
 

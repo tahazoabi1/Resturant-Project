@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
@@ -15,6 +16,7 @@ import java.io.IOException;
 
 public class Main extends Application {
 
+	public static User user = null;
 	private static Scene scene;
 	public static SimpleClient client;
 	public static Stage primaryStage;
@@ -27,7 +29,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		// Create the root group for the scene
 
-		Parent root = FXMLLoader.load(getClass().getResource("Register.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("init.fxml"));
 		Main.primaryStage = primaryStage;
 		Scene scene = new Scene(root);
 
@@ -66,9 +68,25 @@ public class Main extends Application {
 					}
 				});
 				break;
-
+			case "Log In":
+				Platform.runLater(() -> {
+					setWindowTitle("Log In");
+					try {
+						setContent("log-in");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
+				break;
 			case "Register":
-				showRegisterScreen();
+				Platform.runLater(() -> {
+					setWindowTitle("Register");
+					try {
+						setContent("Register");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
 				break;
 		}
 	}

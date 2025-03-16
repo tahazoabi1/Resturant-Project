@@ -57,3 +57,5 @@ New Text Document.txt
 release.properties
 pom.xml.releaseBackup
 pom.xml.tag
+
+server\src\main\resources\hibernate.properties

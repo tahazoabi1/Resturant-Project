@@ -48,6 +48,7 @@ public class ConnectToDataBase {
         }
         return sessionFactory;
     }
+
     public static void addBranch(String name, String location, String description, String imageUrl) {
         Session session = null;
         Transaction transaction = null;
@@ -72,7 +73,6 @@ public class ConnectToDataBase {
             if (session != null) session.close();
         }
     }
-
 
 
     public static List<Branch> getAllBranches() throws Exception {
@@ -262,7 +262,6 @@ public class ConnectToDataBase {
     }
 
 
-
     public static void initializeDatabase() throws HibernateException {
         Session session = null;
         Transaction transaction = null;
@@ -283,5 +282,49 @@ public class ConnectToDataBase {
         if (session != null && session.isOpen()) {
             session.close();
         }
+    }
+
+    public static User Login(String email, String password) {
+        Session session = null;
+        Transaction transaction = null;
+        User user = null;
+        try {
+            // Get the session from the session factory
+            session = getSessionFactory().openSession();
+
+            // Start a transaction
+            transaction = session.beginTransaction();
+
+            // Query to find the user by email and password
+            String hql = "FROM User u WHERE u.email = :email AND u.password = :password";
+            user = session.createQuery(hql, User.class)
+                    .setParameter("email", email)
+                    .setParameter("password", password)
+                    .uniqueResult();
+
+            if (user != null) {
+                // User found, return user information (or process as needed)
+                System.out.println("Login successful! Welcome, " + user.getName());
+                user.signIn();
+            } else {
+                // No user found with the provided email and password
+                System.out.println("Error: No user found with the provided email and password.");
+            }
+
+            // Commit the transaction if everything goes well
+            transaction.commit();
+        } catch (Exception e) {
+            // Rollback the transaction in case of an error
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            // Close the session to release resources
+            if (session != null) {
+                session.close();
+            }
+        }
+        return user;
     }
 }

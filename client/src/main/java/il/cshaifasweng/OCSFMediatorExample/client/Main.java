@@ -88,6 +88,10 @@ public class Main extends Application {
 					}
 				});
 				break;
+
+
+			case "CustomerRegister":
+				break;
 			case "First Page":
 				Platform.runLater(() -> {
 					try {
@@ -125,4 +129,6 @@ public class Main extends Application {
 	}
 
 
-}
+	}
+
+

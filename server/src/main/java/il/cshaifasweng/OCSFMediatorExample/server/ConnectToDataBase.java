@@ -1,9 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -48,8 +45,7 @@ public class ConnectToDataBase {
         }
         return sessionFactory;
     }
-
-    public static void addBranch(String name, String location, String description, String imageUrl) {
+    public static void addBranch(String name, String location, String description, String imageUrl,String openingHours) {
         Session session = null;
         Transaction transaction = null;
 
@@ -58,7 +54,7 @@ public class ConnectToDataBase {
             transaction = session.beginTransaction();
 
             // Create a new Branch object
-            Branch branch = new Branch(name, location, description, imageUrl);
+            Branch branch = new Branch(name, location, description, imageUrl,openingHours);
 
             // Save the branch
             session.save(branch);
@@ -73,6 +69,31 @@ public class ConnectToDataBase {
             if (session != null) session.close();
         }
     }
+
+    public static void addCustomer(String name, String phoneNumber, String address, String email, String password, String preferredPaymentMethod) {
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            // Ensure columns match the correct order in the users table
+            Customer customer = new Customer(name, phoneNumber, address, email, password, preferredPaymentMethod);
+
+            session.save(customer); // Save to users table
+
+            transaction.commit();
+            System.out.println("Customer added successfully!");
+
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            System.err.println("Error adding customer: " + e.getMessage());
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
 
 
     public static List<Branch> getAllBranches() throws Exception {
@@ -140,6 +161,29 @@ public class ConnectToDataBase {
         }
         return items;
     }
+
+    public static MenuItem getMenuItemByName(String name) {
+        Session session = null;
+        MenuItem menuItem = null;
+        try {
+            session = getSessionFactory().openSession();
+            session.beginTransaction();
+
+            Query<MenuItem> query = session.createQuery("FROM MenuItem WHERE name = :name", MenuItem.class);
+            query.setParameter("name", name);
+            menuItem = query.uniqueResult();
+
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println("Error fetching menu item: " + e.getMessage());
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return menuItem;
+    }
+
 
 
     public static void updateMenuItemPrice(int id, double newPrice) throws Exception {

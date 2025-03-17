@@ -1,0 +1,54 @@
+/* Style for GridPane */
+.grid-pane {
+    -fx-background-color: #f4f4f4;
+    -fx-padding: 20;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+}
+
+/* Style for Labels */
+.label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* Style for TextFields and PasswordField */
+.text-field, .password-field {
+    -fx-font-size: 14px;
+    -fx-padding: 5px;
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 5px;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+}
+
+/* Focused TextField/PasswordField */
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #3f8cff;
+    -fx-background-color: #f0faff;
+}
+
+/* Style for Button */
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #4CAF50;
+    -fx-border-width: 2px;
+    -fx-cursor: hand;
+}
+
+/* Hover effect for Button */
+.button:hover {
+    -fx-background-color: #45a049;
+}
+
+/* Button focus effect */
+.button:focused {
+    -fx-background-color: #45a049;
+    -fx-border-color: #388e3c;
+}

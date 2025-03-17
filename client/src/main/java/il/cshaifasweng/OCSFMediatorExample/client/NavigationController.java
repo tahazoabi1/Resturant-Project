@@ -18,6 +18,7 @@ public class NavigationController {
 
     private static NavigationController instance;
 
+    private String homePage = "first-page";
     @FXML
     private Text welcomeState;
 
@@ -33,7 +34,7 @@ public class NavigationController {
 
     @FXML
     private void showMenuList() {
-        loadPage("primary");
+        loadPage("browseMenu");
     }
 
     @FXML
@@ -48,12 +49,12 @@ public class NavigationController {
 
     @FXML
     private void showRegister() {
-        loadPage("Register");
+        loadPage("customer-rigister");
     }
 
     @FXML
-    private void showFirstPage() {
-        loadPage("first-page");
+    private void showHomePage() {
+        loadPage(homePage);
     }
 
     // Now, loadPage is no longer static
@@ -84,7 +85,7 @@ public class NavigationController {
         else{
             logInBtn.setVisible(false);
             welcomeState.setText(Main.user.getName());
-
+            this.homePage = "primary";
         }
     }
 }

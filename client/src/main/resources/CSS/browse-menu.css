@@ -1,0 +1,29 @@
+/* Style for Labels */
+.label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-padding: 10px;
+}
+
+/* Style for Branches Label */
+#branchListView {
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+    -fx-padding: 5px;
+    -fx-font-size: 13px;
+    -fx-pref-height: 150px;
+    -fx-pref-width: 200px;
+}
+
+/* Style for Menu Items Label */
+#menuItemListView {
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+    -fx-padding: 5px;
+    -fx-font-size: 13px;
+    -fx-pref-height: 150px;
+    -fx-pref-width: 200px;
+}

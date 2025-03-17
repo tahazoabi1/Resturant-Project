@@ -97,9 +97,12 @@ public class MenuItem implements Serializable {
     public void setPrice(double Price) {
         this.price = Price;
     }
+
+    @Override
     public String toString() {
-        return String.format("MenuItem ID: %d\nTitle: %s\ningredients: %s\npreferences: %s%s\nprice: %s", this.id, this.name, this.ingredients, this.preferences, this.price);
+        return String.format("MenuItem{name='%s', price='%s'}", name, price);  // Ensure all placeholders have corresponding arguments
     }
+
 
     public void setName(String name) {
         this.name = name;
@@ -130,5 +133,7 @@ public class MenuItem implements Serializable {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+
 }
 

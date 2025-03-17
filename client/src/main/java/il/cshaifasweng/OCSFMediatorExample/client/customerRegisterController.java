@@ -1,10 +1,13 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.server.ConnectToDataBase;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+
+import java.io.IOException;
+
+import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.getClient;
 
 public class customerRegisterController {
 
@@ -27,7 +30,7 @@ public class customerRegisterController {
     private TextField paymentMethodField;
 
     @FXML
-    private void handleRegister() {
+    private void handleRegister() throws IOException {
         String name = nameField.getText();
         String phoneNumber = phoneNumberField.getText();
         String address = addressField.getText();
@@ -49,7 +52,11 @@ public class customerRegisterController {
         }
 
         // Register customer in the database
-        ConnectToDataBase.addCustomer(name, phoneNumber, address, email, password, paymentMethod);
+        try{
+            getClient().sendToServer("Rigister Customer#"+ name +"#" + phoneNumber +"#" + address + "#" + email + "#" + password + "#" +paymentMethod);
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
         showAlert("Success", "Customer registered successfully!");
     }
 

@@ -71,26 +71,26 @@ public class SimpleServer extends AbstractServer {
 				}
 			}
 		} else if (msgString.equals("get all branches")) {
-			System.out.println("\n====== Processing Get All branches ======");
+			System.out.println("\n====== Processing Get All Branches ======");
 			try {
-				System.out.println("Requesting items from database...");
+				System.out.println("Requesting branches from database...");
 				List<Branch> temp = ConnectToDataBase.getAllBranches();
-				System.out.println("Retrieved " + (temp != null ? temp.size() : 0) + " items from database");
+				System.out.println("Retrieved " + (temp != null ? temp.size() : 0) + " branches from database");
 
 				if (temp != null && !temp.isEmpty()) {
-					System.out.println("Items found:");
+					System.out.println("Branches found:");
 					for (Branch branch : temp) {
-						System.out.println("  - " + branch.getName() + ")");
+						System.out.println("  - " + branch.getName() + " (" + branch.getClass().getName() + ")");
 					}
 				} else {
-					System.out.println("No items found in database");
+					System.out.println("No branches found in database");
 				}
 
 				client.sendToClient(temp);
-				System.out.println("Sent branches to client");
-				System.out.println("Sending branches to client: " + temp);
+				System.out.println("✅ Sent branches to client: " + temp.getClass().getName());
+
 			} catch (Exception e) {
-				System.err.println("Error retrieving branches: " + e.getMessage());
+				System.err.println("❌ Error retrieving branches: " + e.getMessage());
 				e.printStackTrace();
 				try {
 					Warning warning = new Warning("Failed to retrieve branches: " + e.getMessage());
@@ -99,7 +99,9 @@ public class SimpleServer extends AbstractServer {
 					ex.printStackTrace();
 				}
 			}
-		} else if (msgString.startsWith("Update price")) {
+		}
+
+		else if (msgString.startsWith("Update price")) {
 			System.out.println("\n====== Processing Price Update ======");
 			try {
 				String[] parts = msgString.split("@");
@@ -133,7 +135,7 @@ public class SimpleServer extends AbstractServer {
 			}
 			System.out.println("====== End Price Update ======\n");
 		} else if (msgString.startsWith("trying To LogIn")) {
-			System.out.println("\n====== Processing Login Update ======");
+			System.out.println("\n====== Processing Login ======");
 			try {
 				String[] parts = msgString.split("#");
 				if (parts.length != 3) {
@@ -152,6 +154,42 @@ public class SimpleServer extends AbstractServer {
 
 				client.sendToClient(user);
 				System.out.println("Sent user to client");
+
+			} catch (Exception e) {
+				System.err.println("Error Log in" + e.getMessage());
+				e.printStackTrace();
+				try {
+					Warning warning = new Warning("Failed to Log in " + e.getMessage());
+					client.sendToClient(warning);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+			System.out.println("====== End Log in ======\n");
+		}
+
+		else if (msgString.startsWith("Rigister Customer")) {
+			System.out.println("\n====== Processing Rigister Customer ======");
+			try {
+				String[] parts = msgString.split("#");
+				if (parts.length != 7) {
+					throw new IllegalArgumentException("Invalid Email or Password format");
+				}
+
+				String name = parts[1];
+				String phoneNumber = parts[2];
+				String adress = parts[3];
+				String email = parts[4];
+				String password = parts[5];
+				String paymentMethod = parts[6];
+
+				System.out.println("Rigister Customer...");
+
+				// Update in database
+
+				ConnectToDataBase.addCustomer(name, phoneNumber, adress, email, password, paymentMethod);
+
+				client.sendToClient("Register Completed");
 
 			} catch (Exception e) {
 				System.err.println("Error Log in" + e.getMessage());

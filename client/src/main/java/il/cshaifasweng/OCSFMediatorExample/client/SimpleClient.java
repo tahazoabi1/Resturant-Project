@@ -5,6 +5,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Branch;
 import il.cshaifasweng.OCSFMediatorExample.entities.MenuItem;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
+import javafx.scene.control.Alert;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
@@ -29,23 +30,27 @@ public class SimpleClient extends AbstractClient {
 		}
 
 		if (msg instanceof List<?>) {
-			System.out.println("Received list from server");
 			List<?> list = (List<?>) msg;
-			if (!list.isEmpty() && list.get(0) instanceof MenuItem) {
-				@SuppressWarnings("unchecked")
-				List<MenuItem> menuItems = (List<MenuItem>) list;
-				System.out.println("Received " + menuItems.size() + " menu items");
-				EventBus.getDefault().post(menuItems);
-			}
-			if (!list.isEmpty() && list.get(0) instanceof Branch) {
-				@SuppressWarnings("unchecked")
-				List<Branch> branches = (List<Branch>) list;
-				System.out.println("Received " + branches.size() + " branches");
-				EventBus.getDefault().post(branches);
-			}
-			else{
-				System.err.println("got list but the the wanted one or maybe empty");
 
+			if (!list.isEmpty()) {
+				Object firstElement = list.get(0);
+				System.out.println("First element in list is of type: " + firstElement.getClass().getName()); // Debugging line
+
+				if (firstElement instanceof MenuItem) {
+					List<MenuItem> menuItems = (List<MenuItem>) list;
+					System.out.println("Received " + menuItems.size() + " menu items");
+					EventBus.getDefault().post((menuItems));
+				}
+				else if (firstElement instanceof Branch) {
+					List<Branch> branches = (List<Branch>) list;
+					System.out.println("Received " + branches.size() + " branches");
+					EventBus.getDefault().post(branches);
+				}
+				else {
+					System.err.println("Received an unknown list type: " + firstElement.getClass().getName());
+				}
+			} else {
+				System.err.println("Received an empty list from the server");
 			}
 		}
 		else if (msg instanceof MenuItem) {
@@ -56,6 +61,17 @@ public class SimpleClient extends AbstractClient {
 			System.out.println("Received User from the server");
 			EventBus.getDefault().post(msg);
 		}
+		else if (msg instanceof String){
+			String msgString = msg.toString();
+			if(msgString.equals("Register Completed"));
+			{
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("Registered Completed");
+				alert.setContentText("Registered Successfully");
+				alert.show();
+			}
+		}
+
 		else{
 			System.err.println("Got nothing from the server");
 		}

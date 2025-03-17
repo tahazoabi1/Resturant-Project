@@ -11,7 +11,6 @@ import java.util.List;
 
 public class ConnectToDataBase {
     private static Session session;
-    private static List<MenuItem> menuItems;
     private static SessionFactory sessionFactory = null;
 
     public ConnectToDataBase() {

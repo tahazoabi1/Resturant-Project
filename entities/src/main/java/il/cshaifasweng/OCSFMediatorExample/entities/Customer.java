@@ -29,7 +29,7 @@ public class Customer extends User implements Serializable {
 
     public Customer() {}
 
-    public Customer(String address, String preferredPaymentMethod, String name, String phoneNumber, String email, String password) {
+    public Customer(String name, String phoneNumber, String address, String email, String password, String preferredPaymentMethod) {
         super(name, phoneNumber, email, password);  // Call the parent constructor
         this.address = address;
         this.preferredPaymentMethod = preferredPaymentMethod;

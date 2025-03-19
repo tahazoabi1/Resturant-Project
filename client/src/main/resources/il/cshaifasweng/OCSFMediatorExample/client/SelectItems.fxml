@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SelectItemsController">
+    <VBox spacing="20" alignment="CENTER" prefWidth="600" prefHeight="600">
+        <Label text="Select Items" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+        <!-- Centering the ListView inside an HBox -->
+        <HBox alignment="CENTER">
+            <ListView fx:id="itemsListView" prefHeight="400" prefWidth="400"/>
+        </HBox>
+
+        <!-- Centering the Button inside an HBox -->
+        <HBox alignment="CENTER">
+            <Button text="Confirm Selection" fx:id="confirmButton" onAction="#handleConfirmSelection"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

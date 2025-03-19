@@ -203,6 +203,35 @@ public class SimpleServer extends AbstractServer {
 			}
 			System.out.println("====== End Log in ======\n");
 		}
+
+		else if (msgString.startsWith("get menu items for branch#")) {
+			System.out.println("\n====== Processing Get Menu Items for Branch ======");
+
+			try {
+				String[] parts = msgString.split("#");
+				if (parts.length != 2) {
+					throw new IllegalArgumentException("Invalid request format");
+				}
+
+				String branchName = parts[1];
+				System.out.println("Fetching menu items for branch: " + branchName);
+
+				List<MenuItem> items = ConnectToDataBase.getMenuItemsByBranch(branchName);
+				client.sendToClient(items);
+				System.out.println("✅ Sent menu items for branch: " + branchName);
+
+			} catch (Exception e) {
+				System.err.println("❌ Error retrieving menu items for branch: " + e.getMessage());
+				e.printStackTrace();
+				try {
+					client.sendToClient(new Warning("Failed to get menu items: " + e.getMessage()));
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+
+
 	}
 
 	@Override

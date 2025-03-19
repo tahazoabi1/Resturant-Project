@@ -33,7 +33,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		// Create the root group for the scene
 
-		Parent root = FXMLLoader.load(getClass().getResource("init.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("SelectItems.fxml"));
 		Main.primaryStage = primaryStage;
 		Scene scene = new Scene(root);
 

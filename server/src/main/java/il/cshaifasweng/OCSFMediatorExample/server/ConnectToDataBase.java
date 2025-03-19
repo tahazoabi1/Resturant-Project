@@ -303,6 +303,38 @@ public class ConnectToDataBase {
 
         return branch;
     }
+    public static List<MenuItem> getMenuItemsByBranch(String branchName) {
+        Session session = null;
+        List<MenuItem> items = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            session.beginTransaction();
+
+            Query<MenuItem> query = session.createQuery(
+                    "SELECT DISTINCT mi FROM MenuItem mi JOIN mi.branches b WHERE b.name = :branchName",
+                    MenuItem.class
+            );
+            query.setParameter("branchName", branchName);
+            items = query.getResultList();
+
+            session.getTransaction().commit();
+            System.out.println("Found " + (items != null ? items.size() : 0) + " items for branch " + branchName);
+        } catch (Exception e) {
+            System.err.println("Error retrieving menu items: " + e.getMessage());
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return items;
+    }
+
+
 
 
     public static void initializeDatabase() throws HibernateException {

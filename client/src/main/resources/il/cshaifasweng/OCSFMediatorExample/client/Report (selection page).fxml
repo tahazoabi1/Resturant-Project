@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="264.0" prefWidth="294.0" spacing="15" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ReportController">
+
+<Label style="-fx-font-size: 20; -fx-font-weight: bold;" text="Generate Monthly Report" />
+
+<HBox spacing="10">
+    <Label text="Select Year:" />
+    <ComboBox fx:id="yearComboBox" prefWidth="150" />
+</HBox>
+
+<HBox spacing="10">
+    <Label text="Select Month:" />
+    <ComboBox fx:id="monthComboBox" prefWidth="150" />
+</HBox>
+
+<HBox spacing="10">
+    <Label text="Select Branch:" />
+    <ComboBox fx:id="branchComboBox" prefWidth="150" />
+</HBox>
+
+<!--<Button text="Generate Report" onAction="#generateReport"/>-->
+</VBox>

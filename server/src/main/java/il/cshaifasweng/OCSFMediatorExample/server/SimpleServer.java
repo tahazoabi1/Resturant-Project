@@ -1,8 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
-import il.cshaifasweng.OCSFMediatorExample.entities.Branch;
-import il.cshaifasweng.OCSFMediatorExample.entities.MenuItem;
-import il.cshaifasweng.OCSFMediatorExample.entities.User;
-import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
+import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import il.cshaifasweng.OCSFMediatorExample.server.ConnectToDataBase;
@@ -164,7 +161,95 @@ public class SimpleServer extends AbstractServer {
 				}
 			}
 			System.out.println("====== End Log in ======\n");
+
+			////////////////////me/////////////////
+		} else if (msgString.equals("get all complaints")) {
+			System.out.println("\n====== Processing Get All Complaints ======");
+			try {
+				List<Complaint> complaints = ConnectToDataBase.getAllComplaints();
+				System.out.println("Fetched complaints from DB: " + complaints);
+
+				client.sendToClient(complaints);
+				System.out.println("Sent complaints to client");
+			} catch (Exception e) {
+				System.err.println("Error retrieving complaints: " + e.getMessage());
+				e.printStackTrace();
+				try {
+					Warning warning = new Warning("Failed to retrieve complaints: " + e.getMessage());
+					client.sendToClient(warning);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+
+		} else if (msgString.startsWith("update complaint")) {
+			System.out.println("\n====== Processing Complaint Update ======");
+			try {
+				String[] parts = msgString.split("#");
+				if (parts.length != 5) {
+					throw new IllegalArgumentException("Invalid update format");
+				}
+
+				int complaintId = Integer.parseInt(parts[1]);
+				String status = parts[2];
+				String solution = parts[3];
+				double compensation = Double.parseDouble(parts[4]);
+
+				Complaint complaint = ConnectToDataBase.getComplaintById(complaintId);
+				if (complaint == null) {
+					throw new Exception("Complaint not found");
+				}
+
+				complaint.setStatus(status);
+				complaint.setSolution(solution);
+				complaint.setCompensationAmount(compensation);
+
+				ConnectToDataBase.updateComplaint(complaint);
+
+				client.sendToClient("Complaint updated successfully.");
+				System.out.println("Complaint updated successfully");
+
+			} catch (Exception e) {
+				System.err.println("Error updating complaint: " + e.getMessage());
+				e.printStackTrace();
+				try {
+					Warning warning = new Warning("Failed to update complaint: " + e.getMessage());
+					client.sendToClient(warning);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		} else if (msgString.startsWith("send email#")) {
+			try {
+				String[] parts = msgString.split("#", 4);
+				if (parts.length != 4) {
+					throw new IllegalArgumentException("Invalid email format");
+				}
+
+				String recipientEmail = parts[1];
+				String subject = parts[2];
+				String body = parts[3];
+
+				System.out.println("Sending email to: " + recipientEmail);
+				System.out.println("Subject: " + subject);
+				System.out.println("Body:\n" + body);
+
+				// Send email (you can replace this with a real mail sending method)
+				MailUtil.sendEmail(recipientEmail, subject, body);
+
+				client.sendToClient("Email sent successfully.");
+			} catch (Exception e) {
+				System.err.println("Error sending email: " + e.getMessage());
+				e.printStackTrace();
+				try {
+					Warning warning = new Warning("Failed to send email: " + e.getMessage());
+					client.sendToClient(warning);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
 		}
+
 	}
 
 	@Override

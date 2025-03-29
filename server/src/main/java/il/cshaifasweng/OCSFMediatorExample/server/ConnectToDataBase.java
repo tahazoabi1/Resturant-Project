@@ -10,7 +10,10 @@ import org.hibernate.service.ServiceRegistry;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConnectToDataBase {
     private static Session session;
@@ -40,6 +43,7 @@ public class ConnectToDataBase {
             configuration.addAnnotatedClass(Tables.class);
             configuration.addAnnotatedClass(User.class);
             configuration.addAnnotatedClass(Worker.class);
+
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties())
                     .build();
@@ -327,4 +331,153 @@ public class ConnectToDataBase {
         }
         return user;
     }
+
+    /// //////////// me ////////
+    public static List<Complaint> getAllComplaints() throws Exception {
+        System.out.println("Getting all complaints from database...");
+        Session session = null;
+        List<Complaint> complaints;
+
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Complaint> query = builder.createQuery(Complaint.class);
+            Root<Complaint> root = query.from(Complaint.class);
+            query.select(root);
+
+            complaints = session.createQuery(query).getResultList();
+            System.out.println("Found " + (complaints != null ? complaints.size() : 0) + " complaints");
+
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println("Error in getAllComplaints: " + e.getMessage());
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return complaints;
+    }
+
+    public static void updateComplaint(Complaint complaint) {
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            // Update the complaint (assuming that the complaint has an ID set)
+            session.update(complaint);
+
+            transaction.commit();
+            System.out.println("Complaint updated successfully");
+
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            System.err.println("Error updating complaint: " + e.getMessage());
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+    public static void addComplaint(Complaint complaint) {
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            // Save the complaint to the database
+            session.save(complaint);
+
+            transaction.commit();
+            System.out.println("Complaint added successfully");
+
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            System.err.println("Error adding complaint: " + e.getMessage());
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
+    public static Complaint getComplaintById(int id) {
+        Session session = null;
+        Complaint complaint = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            session.beginTransaction();
+
+            complaint = session.get(Complaint.class, id); // Fetch the complaint by ID
+            if (complaint != null) {
+                System.out.println("Complaint found: " + complaint.getId());
+            } else {
+                System.out.println("No complaint found with ID " + id);
+            }
+
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println("Error retrieving complaint by ID: " + e.getMessage());
+        } finally {
+            if (session != null) session.close();
+        }
+
+        return complaint;
+    }
+//
+//    public static MonthlyReport generateMonthlyReport(int branchId, String month) {
+//        EntityManager em = getEntityManager();
+//        YearMonth yearMonth = YearMonth.parse(month);
+//        LocalDate startDate = yearMonth.atDay(1);
+//        LocalDate endDate = yearMonth.atEndOfMonth();
+//
+//        // Deliveries
+//        String deliveryQuery = "SELECT COUNT(o) FROM Order o WHERE o.isAccepted = true AND o.status = 'Delivered' " +
+//                "AND o.branch.id = :branchId AND o.isDelivery = true AND o.date BETWEEN :start AND :end";
+//        Long deliveryCount = em.createQuery(deliveryQuery, Long.class)
+//                .setParameter("branchId", branchId)
+//                .setParameter("start", startDate)
+//                .setParameter("end", endDate)
+//                .getSingleResult();
+//
+//        // Count visits (orders that are not deliveries)
+//        String visitsQuery = "SELECT o.date, COUNT(o) FROM Order o WHERE o.branch.id = :branchId " +
+//                "AND o.isDelivery = false AND o.date BETWEEN :start AND :end GROUP BY o.date";
+//        List<Object[]> visitsRaw = em.createQuery(visitsQuery)
+//                .setParameter("branchId", branchId)
+//                .setParameter("start", startDate)
+//                .setParameter("end", endDate)
+//                .getResultList();
+//
+//        Map<LocalDate, Integer> customersPerDay = new HashMap<>();
+//        for (Object[] row : visitsRaw) {
+//            customersPerDay.put((LocalDate) row[0], ((Long) row[1]).intValue());
+//        }
+//
+//        // Complaints histogram by status
+//        String complaintsQuery = "SELECT c.status, COUNT(c) FROM Complaint c WHERE c.branch.id = :branchId " +
+//                "AND c.date BETWEEN :start AND :end GROUP BY c.status";
+//        List<Object[]> complaintsRaw = em.createQuery(complaintsQuery)
+//                .setParameter("branchId", branchId)
+//                .setParameter("start", startDate)
+//                .setParameter("end", endDate)
+//                .getResultList();
+//
+//        Map<String, Integer> complaintsHistogram = new HashMap<>();
+//        for (Object[] row : complaintsRaw) {
+//            complaintsHistogram.put((String) row[0], ((Long) row[1]).intValue());
+//        }
+//
+//        return new MonthlyReport(deliveryCount.intValue(), customersPerDay, complaintsHistogram);
+//    }
+
 }

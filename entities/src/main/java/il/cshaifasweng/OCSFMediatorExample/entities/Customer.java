@@ -24,7 +24,8 @@ public class Customer extends User implements Serializable {
     @OneToMany(mappedBy = "customer")
     private List<ReservationReport> reservationReports;
 
-    @OneToMany(mappedBy = "customer")
+//    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Complaint> complaints;
 
     public Customer() {}

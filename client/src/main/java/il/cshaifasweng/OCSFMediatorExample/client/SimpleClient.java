@@ -1,10 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
-import il.cshaifasweng.OCSFMediatorExample.entities.Branch;
-import il.cshaifasweng.OCSFMediatorExample.entities.MenuItem;
-import il.cshaifasweng.OCSFMediatorExample.entities.User;
-import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
+import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
@@ -37,11 +34,17 @@ public class SimpleClient extends AbstractClient {
 				System.out.println("Received " + menuItems.size() + " menu items");
 				EventBus.getDefault().post(menuItems);
 			}
-			if (!list.isEmpty() && list.get(0) instanceof Branch) {
+			else if (!list.isEmpty() && list.get(0) instanceof Branch) {
 				@SuppressWarnings("unchecked")
 				List<Branch> branches = (List<Branch>) list;
 				System.out.println("Received " + branches.size() + " branches");
 				EventBus.getDefault().post(branches);
+			}
+			else if (!list.isEmpty() && list.get(0) instanceof Complaint) {
+				@SuppressWarnings("unchecked")
+				List<Complaint> complaints = (List<Complaint>) list;
+				System.out.println("Received " + complaints.size() + " complaints");
+				EventBus.getDefault().post(complaints);
 			}
 			else{
 				System.err.println("got list but the the wanted one or maybe empty");

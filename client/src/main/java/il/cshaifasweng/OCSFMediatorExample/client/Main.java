@@ -31,6 +31,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+
 		// Create the root group for the scene
 
 		Parent root = FXMLLoader.load(getClass().getResource("init.fxml"));
@@ -56,6 +57,15 @@ public class Main extends Application {
 				Platform.runLater(() -> {
 					try {
 						setContent("primary");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
+				break;
+			case "complaintscreen":
+				Platform.runLater(() -> {
+					try {
+						setContent("complaint");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

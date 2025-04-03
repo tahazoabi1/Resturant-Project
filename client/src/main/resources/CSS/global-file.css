@@ -1,0 +1,6 @@
+/* Apply the same background image for all pages */
+.root {
+    -fx-background-image: url("../Images/restaurant-background.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}

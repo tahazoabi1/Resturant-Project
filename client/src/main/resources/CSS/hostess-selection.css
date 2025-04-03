@@ -1,0 +1,61 @@
+/* Ensure the background image is visible by making elements transparent */
+AnchorPane {
+    -fx-background-color: transparent;
+}
+
+/* VBox styling (centering content and adding spacing) */
+VBox {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+    -fx-padding: 20;
+    -fx-background-color: rgba(0, 0, 0, 0.5); /* Slight dark overlay for better contrast */
+    -fx-border-radius: 10px;
+}
+
+/* Labels styling */
+Label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, black, 3, 0, 1, 1);
+}
+
+/* ComboBox styling */
+ComboBox {
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-border-radius: 5px;
+}
+
+/* ListView styling */
+ListView {
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    -fx-border-color: #444;
+    -fx-border-radius: 5px;
+}
+
+/* Button styling */
+Button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, black, 3, 0, 1, 1);
+}
+
+/* Hover effect for buttons */
+Button:hover {
+    -fx-background-color: #45a049;
+}
+
+#unserveButton {
+    -fx-background-color: #f44336;
+}
+
+#unserveButton:hover {
+    -fx-background-color: #d32f2f;
+}

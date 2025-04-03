@@ -31,9 +31,6 @@ public class Branch implements Serializable {
     private String openingHours;
 
     @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY)
-    private List<HostingArea> hostingAreas;
-
-    @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY)
     private List<Worker> workers;
 
     @ManyToMany
@@ -43,6 +40,9 @@ public class Branch implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "menu_item_id")
     )
     private List<MenuItem> items;
+
+    @OneToMany(mappedBy = "branch", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Tables> tables;
     // Constructors
     public Branch() {}
 
@@ -53,11 +53,6 @@ public class Branch implements Serializable {
         this.imageUrl = imageUrl;
         this.openingHours = openingHours;
     }
-
-
-
-
-
 
     // Getters and Setters
     public int getId() { return id; }
@@ -81,11 +76,17 @@ public class Branch implements Serializable {
     public String getOpeningHours() { return openingHours; }
     public void setOpeningHours(String openingHours) { this.openingHours = openingHours; }
 
-    public List<HostingArea> getHostingAreas() { return hostingAreas; }
-    public void setHostingAreas(List<HostingArea> hostingAreas) { this.hostingAreas = hostingAreas; }
 
     public List<MenuItem> getItems() { return items; }
     public void setItems(List<MenuItem> items) { this.items = items; }
+
+    public List<Tables> getTables() {
+        return tables;
+    }
+
+    public void setTables(List<Tables> tables) {
+        this.tables = tables;
+    }
 
     @Override
     public String toString() {

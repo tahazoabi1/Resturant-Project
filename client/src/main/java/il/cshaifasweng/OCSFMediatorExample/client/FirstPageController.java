@@ -8,7 +8,7 @@ public class FirstPageController {
     @FXML
     void switchToChooseBranchPage(ActionEvent event) {
         // Use the NavigationController instance to call loadPage
-        NavigationController.getInstance().loadPage("select-branch");
+        NavigationController.getInstance().loadPage("home-page");
     }
 
     @FXML

@@ -134,7 +134,36 @@ public class SimpleServer extends AbstractServer {
 				}
 			}
 			System.out.println("====== End Price Update ======\n");
-		} else if (msgString.startsWith("trying To LogIn")) {
+		}
+
+		else if (msgString.startsWith("Update serve table")) {
+			System.out.println("\n====== Processing table serve Update ======");
+			try {
+				String[] parts = msgString.split("@");
+				if (parts.length != 2) {
+					throw new IllegalArgumentException("Invalid update format");
+				}
+
+				int id = Integer.parseInt(parts[1]);
+
+				// Update in database
+				ConnectToDataBase.updateServeTable(id);
+				System.out.println("serve updated in database");
+
+			} catch (Exception e) {
+				System.err.println("Error updating price: " + e.getMessage());
+				e.printStackTrace();
+				try {
+					Warning warning = new Warning("Failed to update price: " + e.getMessage());
+					client.sendToClient(warning);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+			System.out.println("====== End Price Update ======\n");
+		}
+
+		else if (msgString.startsWith("trying To LogIn")) {
 			System.out.println("\n====== Processing Login ======");
 			try {
 				String[] parts = msgString.split("#");
@@ -202,6 +231,62 @@ public class SimpleServer extends AbstractServer {
 				}
 			}
 			System.out.println("====== End Log in ======\n");
+		}
+		else if (msgString.startsWith("get menu items for branch#")) {
+			System.out.println("\n====== Processing Get Menu Items for Branch ======");
+
+			try {
+				String[] parts = msgString.split("#");
+				if (parts.length != 2) {
+					throw new IllegalArgumentException("Invalid request format");
+				}
+
+				String branchName = parts[1];
+				System.out.println("Fetching menu items for branch: " + branchName);
+
+				List<MenuItem> items = ConnectToDataBase.getMenuItemsByBranch(branchName);
+				client.sendToClient(items);
+				System.out.println("✅ Sent menu items for branch: " + branchName);
+
+			} catch (Exception e) {
+				System.err.println("❌ Error retrieving menu items for branch: " + e.getMessage());
+				e.printStackTrace();
+				try {
+					client.sendToClient(new Warning("Failed to get menu items: " + e.getMessage()));
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+
+
+		else if (msgString.startsWith("add item to order#")) {
+			System.out.println("\n====== Adding Item to Order with Details ======");
+
+			try {
+				// Format: add item to order#orderId#menuItemId#quantity#preferences
+				String[] parts = msgString.split("#");
+				if (parts.length != 5) {
+					client.sendToClient("Invalid message format. Expected: add item to order#orderId#menuItemId#quantity#preferences");
+					return;
+				}
+
+				int orderId = Integer.parseInt(parts[1]);
+				int menuItemId = Integer.parseInt(parts[2]);
+				int quantity = Integer.parseInt(parts[3]);
+				String preferences = parts[4];
+
+				ConnectToDataBase.insertItemIntoOrderWithDetails(orderId, menuItemId, quantity, preferences);
+				client.sendToClient("✅ Item successfully added to order.");
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				try {
+					client.sendToClient("❌ Error adding item to order: " + e.getMessage());
+				} catch (IOException ioException) {
+					ioException.printStackTrace();
+				}
+			}
 		}
 	}
 

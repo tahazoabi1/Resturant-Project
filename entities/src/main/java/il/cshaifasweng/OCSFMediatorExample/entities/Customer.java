@@ -22,10 +22,10 @@ public class Customer extends User implements Serializable {
     private List<Order> orderHistory;  // List of orders placed by the customer
 
     @OneToMany(mappedBy = "customer")
-    private List<ReservationReport> reservationReports;
-
-    @OneToMany(mappedBy = "customer")
     private List<Complaint> complaints;
+
+    @OneToMany
+    private List<Reservation> reservations;
 
     public Customer() {}
 

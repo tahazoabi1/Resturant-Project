@@ -1,0 +1,52 @@
+/* Styling for the AnchorPane */
+.anchor-pane {
+    -fx-background-color: #2d2d2d; /* Dark background for the AnchorPane */
+}
+
+/* Styling for TextFields */
+.text-field {
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #333;
+    -fx-border-radius: 5px;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+}
+
+/* Focused TextField */
+.text-field:focused {
+    -fx-border-color: #3f8cff;
+    -fx-background-color: #f0faff;
+}
+
+/* Styling for the Text */
+.text {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff; /* White text for contrast */
+}
+
+/* Styling for the Button */
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #4CAF50;
+    -fx-border-width: 2px;
+    -fx-cursor: hand;
+}
+
+/* Hover effect for Button */
+.button:hover {
+    -fx-background-color: #45a049;
+}
+
+/* Button focus effect */
+.button:focused {
+    -fx-background-color: #388e3c;
+    -fx-border-color: #388e3c;
+}

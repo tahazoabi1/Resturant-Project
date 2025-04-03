@@ -1,5 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Customer;
+import il.cshaifasweng.OCSFMediatorExample.entities.Hostess;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +13,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+
+import static il.cshaifasweng.OCSFMediatorExample.client.Main.switchScreen;
 
 public class LogInController {
 
@@ -47,17 +51,27 @@ public class LogInController {
     public void authenticateUser(User user) {
         Main.user = user;
         if (user!=null) {
-            javafx.application.Platform.runLater(() -> {
-                NavigationController.getInstance().updateLogInStatus();
-                showAlert("Success", "Logged in successfully!");
-            });
+            if (user instanceof Customer){
+                javafx.application.Platform.runLater(() -> {
+                    NavigationController.getInstance().updateLogInStatus();
+                    NavigationController.getInstance().loadPage("home-page");
+                    showAlert("Success", "Logged in successfully!");
+
+                });
+            }
+            else if (user instanceof Hostess){
+                javafx.application.Platform.runLater(() -> {
+                    NavigationController.getInstance().updateLogInStatus();
+                    NavigationController.getInstance().loadPage("home-page");
+                    showAlert("Success", "Logged in successfully!");
+                });
+            }
         }
         else{
             javafx.application.Platform.runLater(() -> {
                 showAlert("Invalid", "Something Worng in email and password");
             });
         }
-
     }
 
     // Helper method to show alerts

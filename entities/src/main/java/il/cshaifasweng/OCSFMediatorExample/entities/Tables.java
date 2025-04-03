@@ -1,42 +1,51 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
-import javax.persistence.Table;
+import java.io.Serializable;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
-
 @Entity
-@Table(name = "restaurant_tables")  // Maps the entity to the 'restaurant_tables' table in the database
-public class Tables {
+@Table(name = "restaurant_tables")
+public class Tables implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int capacity; // Number of seats at the table
+    @Column(name = "capacity")
+    private int capacity;
 
-    private boolean reserved = false; // Table reservation status
+    @Column(name = "reserved")
+    private boolean reserved = false;
+
+    @Column(name = "table_name")
+    private String tableName;
 
     @ManyToOne
     @JoinColumn(name = "branch_id")
-    private Branch branch; // Foreign key to the hosting area this table belongs to
+    private Branch branch;
+
+    @Column(name = "hosting_area", nullable = false)
+    private String hostingArea;
 
     @ManyToOne
-    @JoinColumn(name = "hosting_area_id")
-    private HostingArea hostingArea; // Foreign key to the hosting area this table belongs to
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")  // Foreign key to the customer who reserved the table
-    private Customer customer;  // The customer who reserved the table
+    @OneToMany(mappedBy = "table", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Reservation> reservations;
 
-    @OneToMany(mappedBy = "table")
-    private List<ReservationReport> reservationReports;
+    private static final Duration RESERVATION_DURATION = Duration.ofMinutes(90);
 
-    // Constructors, getters, setters
     public Tables() {}
 
-    public Tables(int capacity) {
+    public Tables(int capacity, String tableName) {
         this.capacity = capacity;
+        this.tableName = tableName;
     }
 
     public int getCapacity() {
@@ -51,16 +60,8 @@ public class Tables {
         return reserved;
     }
 
-    public void setReserved(boolean reserved) {
-        this.reserved = reserved;
-    }
-
-    public HostingArea getHostingArea() {
-        return hostingArea;
-    }
-
-    public void setHostingArea(HostingArea hostingArea) {
-        this.hostingArea = hostingArea;
+    public void setReserved() {
+        this.reserved = !this.reserved;
     }
 
     public int getId() {
@@ -79,19 +80,43 @@ public class Tables {
         this.customer = customer;
     }
 
-    public List<ReservationReport> getReservationReports() {
-        return reservationReports;
-    }
-
-    public void setReservationReports(List<ReservationReport> reservationReports) {
-        this.reservationReports = reservationReports;
-    }
-
     public Branch getBranch() {
         return branch;
     }
 
     public void setBranch(Branch branch) {
         this.branch = branch;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public String getHostingArea() {
+        return hostingArea;
+    }
+
+    public void setHostingArea(String hostingArea) {
+        this.hostingArea = hostingArea;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public boolean isTableAvailable(LocalDateTime time) {
+        if (reservations == null) return true;
+
+        return reservations.stream().noneMatch(res ->
+                res.getReservationStartTime().isBefore(time.plusMinutes(90)) &&
+                        res.getReservationEndTime().isAfter(time));
     }
 }

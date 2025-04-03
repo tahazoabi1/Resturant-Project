@@ -36,13 +36,13 @@ public class Main extends Application {
 		Parent root = FXMLLoader.load(getClass().getResource("init.fxml"));
 		Main.primaryStage = primaryStage;
 		Scene scene = new Scene(root);
-
-		Image icon = new Image("file:/D:/Learning/resturant-project/Images/restaurantLogo.jpg");
+		Image icon = new Image("/Images/restaurantLogo.jpg");
 		primaryStage.getIcons().add(icon);
 		// Set the title and scene for the stage
 		primaryStage.setTitle("Restaurant");
 		primaryStage.setWidth(700);
 		primaryStage.setHeight(600);
+		scene.getStylesheets().add(getClass().getResource("/CSS/global-file.css").toExternalForm());
 		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
 
@@ -52,62 +52,15 @@ public class Main extends Application {
 
 	public static void switchScreen(String screenName) {
 		switch (screenName) {
-			case "Menu List":
-				Platform.runLater(() -> {
-					try {
-						setContent("primary");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				});
-				break;
-			case "SelectBranchScreen":
-				Platform.runLater(() -> {
-					try {
-						setContent("selected-branch");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				});
-				break;
-			case "Log In":
-				Platform.runLater(() -> {
-					try {
-						setContent("log-in");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				});
-				break;
-			case "Register":
-				Platform.runLater(() -> {
-					try {
-						setContent("Register");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				});
-				break;
-
-
-			case "CustomerRegister":
-				break;
-			case "First Page":
-				Platform.runLater(() -> {
-					try {
-						setContent("first-page");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				});
 			case "navigation":
 				Platform.runLater(() -> {
 					try {
-						setContent("navigation");
+						setContent("home-navigation");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				});
+				break;
 		}
 	}
 

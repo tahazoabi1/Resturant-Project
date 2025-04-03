@@ -1,68 +1,68 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
 
-<?import javafx.geometry.Insets?>
-<?import javafx.collections.FXCollections?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.GridPane?>
+<!--<?import javafx.geometry.Insets?>-->
+<!--<?import javafx.collections.FXCollections?>-->
+<!--<?import javafx.scene.control.Button?>-->
+<!--<?import javafx.scene.control.ChoiceBox?>-->
+<!--<?import javafx.scene.control.Label?>-->
+<!--<?import javafx.scene.control.PasswordField?>-->
+<!--<?import javafx.scene.control.TextField?>-->
+<!--<?import javafx.scene.layout.GridPane?>-->
 
-<?import java.lang.String?>
-<GridPane fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RegisterController"
-          xmlns:fx="http://javafx.com/fxml/1"
-          xmlns="http://javafx.com/javafx/8"
-          alignment="center"
-          hgap="10"
-          vgap="10">
+<!--<?import java.lang.String?>-->
+<!--<GridPane fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RegisterController"-->
+<!--          xmlns:fx="http://javafx.com/fxml/1"-->
+<!--          xmlns="http://javafx.com/javafx/8"-->
+<!--          alignment="center"-->
+<!--          hgap="10"-->
+<!--          vgap="10">-->
 
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
+<!--    <padding>-->
+<!--        <Insets top="20" right="20" bottom="20" left="20"/>-->
+<!--    </padding>-->
 
-    <!-- ID -->
-    <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-    <TextField fx:id="idField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+<!--    &lt;!&ndash; ID &ndash;&gt;-->
+<!--    <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>-->
+<!--    <TextField fx:id="idField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>-->
 
-    <!-- Name -->
-    <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+<!--    &lt;!&ndash; Name &ndash;&gt;-->
+<!--    <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>-->
+<!--    <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>-->
 
-    <!-- Email -->
-    <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-    <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+<!--    &lt;!&ndash; Email &ndash;&gt;-->
+<!--    <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>-->
+<!--    <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>-->
 
-    <!-- Password -->
-    <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-    <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+<!--    &lt;!&ndash; Password &ndash;&gt;-->
+<!--    <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>-->
+<!--    <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>-->
 
-    <!-- Phone Number -->
-    <Label text="Phone Number:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-    <TextField fx:id="phoneNumberField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+<!--    &lt;!&ndash; Phone Number &ndash;&gt;-->
+<!--    <Label text="Phone Number:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>-->
+<!--    <TextField fx:id="phoneNumberField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>-->
 
-    <!-- Salary -->
-    <Label text="Salary:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-    <TextField fx:id="salaryField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+<!--    &lt;!&ndash; Salary &ndash;&gt;-->
+<!--    <Label text="Salary:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>-->
+<!--    <TextField fx:id="salaryField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>-->
 
-    <!-- Branch -->
-    <Label text="Branch:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-    <TextField fx:id="branchField" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+<!--    &lt;!&ndash; Branch &ndash;&gt;-->
+<!--    <Label text="Branch:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>-->
+<!--    <TextField fx:id="branchField" GridPane.columnIndex="1" GridPane.rowIndex="6"/>-->
 
-    <!-- Role Selection -->
-    <Label text="Role:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
-    <ChoiceBox fx:id="roleChoiceBox" GridPane.columnIndex="1" GridPane.rowIndex="7">
-        <items>
-            <FXCollections fx:factory="observableArrayList">
-                <String fx:value="Manager"/>
-                <String fx:value="Hostess"/>
-                <String fx:value="Dietitian"/>
-                <String fx:value="Service Worker"/>
-            </FXCollections>
-        </items>
-    </ChoiceBox>
+<!--    &lt;!&ndash; Role Selection &ndash;&gt;-->
+<!--    <Label text="Role:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>-->
+<!--    <ChoiceBox fx:id="roleChoiceBox" GridPane.columnIndex="1" GridPane.rowIndex="7">-->
+<!--        <items>-->
+<!--            <FXCollections fx:factory="observableArrayList">-->
+<!--                <String fx:value="Manager"/>-->
+<!--                <String fx:value="Hostess"/>-->
+<!--                <String fx:value="Dietitian"/>-->
+<!--                <String fx:value="Service Worker"/>-->
+<!--            </FXCollections>-->
+<!--        </items>-->
+<!--    </ChoiceBox>-->
 
-    <!-- Register Button -->
-    <Button text="Register" fx:id="registerButton" onAction="#handleRegister" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+<!--    &lt;!&ndash; Register Button &ndash;&gt;-->
+<!--    <Button text="Register" fx:id="registerButton" onAction="#handleRegister" GridPane.columnIndex="1" GridPane.rowIndex="8"/>-->
 
-</GridPane>
+<!--</GridPane>-->

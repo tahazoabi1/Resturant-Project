@@ -1,6 +1,6 @@
 /* Style for GridPane */
 .grid-pane {
-    -fx-background-color: #f4f4f4;
+    -fx-background-color: #2d2d2d; /* Dark background for the grid */
     -fx-padding: 20;
     -fx-hgap: 10;
     -fx-vgap: 10;
@@ -10,45 +10,46 @@
 .label {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-text-fill: #333;
+    -fx-text-fill: #ffffff; /* White text for contrast */
 }
 
 /* Style for TextFields and PasswordField */
 .text-field, .password-field {
     -fx-font-size: 14px;
     -fx-padding: 5px;
-    -fx-background-color: #ffffff;
+    -fx-background-color: #333333; /* Dark background for input fields */
+    -fx-text-fill: white; /* White text */
     -fx-border-radius: 5px;
-    -fx-border-color: #cccccc;
+    -fx-border-color: #555555; /* Lighter border color */
     -fx-border-width: 1px;
 }
 
 /* Focused TextField/PasswordField */
 .text-field:focused, .password-field:focused {
-    -fx-border-color: #3f8cff;
-    -fx-background-color: #f0faff;
+    -fx-border-color: #3f8cff; /* Blue border on focus */
+    -fx-background-color: #444444; /* Slightly lighter background on focus */
 }
 
 /* Style for Button */
 .button {
-    -fx-background-color: #4CAF50;
-    -fx-text-fill: white;
+    -fx-background-color: #4CAF50; /* Green button background */
+    -fx-text-fill: white; /* White text */
     -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-padding: 10px 20px;
     -fx-border-radius: 5px;
-    -fx-border-color: #4CAF50;
+    -fx-border-color: #4CAF50; /* Green border */
     -fx-border-width: 2px;
     -fx-cursor: hand;
 }
 
 /* Hover effect for Button */
 .button:hover {
-    -fx-background-color: #45a049;
+    -fx-background-color: #45a049; /* Slightly darker green on hover */
 }
 
 /* Button focus effect */
 .button:focused {
-    -fx-background-color: #45a049;
-    -fx-border-color: #388e3c;
+    -fx-background-color: #388e3c; /* Darker green on focus */
+    -fx-border-color: #388e3c; /* Darker green border on focus */
 }

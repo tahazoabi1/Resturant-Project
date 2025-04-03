@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="yourpackage.YourController">
+    <!-- Sidebar (Initially Hidden) -->
+    <VBox fx:id="sidebar" prefWidth="200" style="-fx-background-color: #2C3E50;"
+          translateX="-200">
+        <Button text="🏠 Dashboard" style="-fx-background-color: transparent; -fx-text-fill: white;"/>
+        <Button text="🍽️ Menu" style="-fx-background-color: transparent; -fx-text-fill: white;"/>
+        <Button text="🛒 Cart" style="-fx-background-color: transparent; -fx-text-fill: white;"/>
+    </VBox>
+
+    <!-- Toggle Button -->
+    <Button fx:id="toggleButton" text="☰" layoutX="10" layoutY="10" onAction="#toggleSidebar"/>
+</AnchorPane>

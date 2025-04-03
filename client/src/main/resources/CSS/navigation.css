@@ -1,0 +1,29 @@
+
+#navBar {
+    -fx-padding: 10px;
+    -fx-background-color: #333;
+}
+
+#navBar Button {
+    -fx-text-fill: white;
+    -fx-background-color: #555;
+}
+
+#navBar Button:hover {
+    -fx-background-color: #777;
+}
+
+#logOutBtn {
+    -fx-text-fill: white;
+    -fx-background-color: #555;
+}
+
+#toggleButton {
+    -fx-background-color: #555;
+    -fx-text-fill: white;
+}
+
+/* Optional: Customize ToggleButton hover state */
+#toggleButton:hover {
+    -fx-background-color: #777;
+}

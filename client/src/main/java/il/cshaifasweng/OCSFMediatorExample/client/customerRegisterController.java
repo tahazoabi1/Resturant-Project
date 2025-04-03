@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
+import static il.cshaifasweng.OCSFMediatorExample.client.Main.client;
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.getClient;
 
 public class customerRegisterController {

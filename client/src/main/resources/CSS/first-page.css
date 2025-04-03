@@ -1,0 +1,38 @@
+/* Styling for the AnchorPane */
+.anchor-pane {
+    -fx-background-color: #2d2d2d; /* Dark background for the AnchorPane */
+}
+
+/* Styling for the Welcome Label */
+.welcome-label {
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff; /* White text for contrast */
+    -fx-font-family: "Arial";
+    -fx-padding: 10px;
+    -fx-alignment: center;
+}
+
+/* Styling for the buttons */
+.main-button {
+    -fx-background-color: #4CAF50; /* Green button background */
+    -fx-text-fill: white; /* White text */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #4CAF50; /* Green border */
+    -fx-border-width: 2px;
+    -fx-cursor: hand;
+}
+
+/* Hover effect for buttons */
+.main-button:hover {
+    -fx-background-color: #45a049; /* Slightly darker green on hover */
+}
+
+/* Focus effect for buttons */
+.main-button:focused {
+    -fx-background-color: #388e3c; /* Darker green on focus */
+    -fx-border-color: #388e3c; /* Darker green border on focus */
+}

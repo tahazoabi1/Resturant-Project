@@ -26,12 +26,11 @@ public class ConnectToDataBase {
             configuration.addAnnotatedClass(Customer.class);
             configuration.addAnnotatedClass(Dietitian.class);
             configuration.addAnnotatedClass(Hostess.class);
-            configuration.addAnnotatedClass(HostingArea.class);
             configuration.addAnnotatedClass(Manager.class);
             configuration.addAnnotatedClass(Order.class);
             configuration.addAnnotatedClass(Report.class);
             configuration.addAnnotatedClass(Request.class);
-            configuration.addAnnotatedClass(ReservationReport.class);
+            configuration.addAnnotatedClass(Reservation.class);
             configuration.addAnnotatedClass(ServiceWorker.class);
             configuration.addAnnotatedClass(Tables.class);
             configuration.addAnnotatedClass(User.class);
@@ -217,6 +216,38 @@ public class ConnectToDataBase {
             }
         }
     }
+    public static void updateServeTable(int id) throws Exception {
+        System.out.println("Updating serve status for table ID: " + id);
+        Session session = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            session.beginTransaction();
+
+            Tables table = session.get(Tables.class, id);
+            if (table != null) {
+                table.setReserved();
+                session.update(table);
+                session.getTransaction().commit();
+                System.out.println("Serve update successfully");
+            } else {
+                System.out.println("table with ID " + id + " not found");
+                if (session.getTransaction() != null) {
+                    session.getTransaction().rollback();
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error updating table: " + e.getMessage());
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
 
     public static void updatePrice(String name, double price) throws Exception {
         System.out.println("Updating price for item name: " + name);
@@ -282,6 +313,172 @@ public class ConnectToDataBase {
         }
     }
 
+    public static int createOrder(int branchId, double totalPrice, int customerId) {
+        int orderId = -1;
+        Transaction transaction = null;
+
+        try (Session session = getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            System.out.println("✅ Creating order: branchId = " + branchId + ", price = " + totalPrice + ", customerId = " + customerId);
+
+            // ✅ Correct SQL syntax
+            String sql = "INSERT INTO orders (branch_id, total_price, is_accepted, status, customer_id) VALUES (?, ?, ?, ?, ?)";
+            SQLQuery query = session.createSQLQuery(sql);
+
+            // ✅ Set parameters (Starting from 1)
+            query.setParameter(1, branchId);            // Branch ID
+            query.setParameter(2, totalPrice);          // Total Price
+            query.setParameter(3, (byte) 0);            // ✅ Use (byte) 0 for is_accepted
+            query.setParameter(4, "Pending");           // Status
+            query.setParameter(5, customerId);          // Customer ID
+
+            int result = query.executeUpdate(); // EXECUTE THE INSERT COMMAND
+
+            System.out.println("✅ Query executed, affected rows: " + result);
+
+            if (result > 0) {
+                // ✅ Retrieve the last inserted ID
+                Query resultIdQuery = session.createSQLQuery("SELECT LAST_INSERT_ID()");
+                orderId = ((Number) resultIdQuery.uniqueResult()).intValue();
+                System.out.println("✅ Order created successfully with ID: " + orderId);
+            } else {
+                System.err.println("❌ Order was not inserted into the database.");
+            }
+
+            transaction.commit();  // COMMIT THE TRANSACTION TO MAKE CHANGES PERMANENT
+
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            System.err.println("❌ Error inserting order: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return orderId;
+    }
+
+
+
+
+    public static void insertItemIntoOrder(int orderId, int menuItemId) {
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            String sql = "INSERT INTO order_menu_items (order_id, menu_item_id) VALUES (?, ?)";
+            Query query = session.createSQLQuery(sql);
+            query.setParameter(1, orderId);
+            query.setParameter(2, menuItemId);
+            query.executeUpdate();
+
+            transaction.commit();
+            System.out.println("✅ Item inserted into order ID: " + orderId + ", MenuItem ID: " + menuItemId);
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            System.err.println("❌ Error inserting item into order: " + e.getMessage());
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
+
+    public static void updateOrderTotal(int orderId, double newTotal) {
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            // ✅ Use native SQL with positional parameters (?)
+            String sql = "UPDATE orders SET total_price = ? WHERE id = ?";
+            Query query = session.createSQLQuery(sql);
+            query.setParameter(1, newTotal);
+            query.setParameter(2, orderId);
+            query.executeUpdate();
+
+            transaction.commit();
+            System.out.println("✅ Order total updated to: " + newTotal);
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            System.err.println("❌ Error updating order total: " + e.getMessage());
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
+
+
+
+
+    public static void insertItemIntoOrderWithDetails(int orderId, int menuItemId, int quantity, String preferences) {
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            String sql = "INSERT INTO order_menu_items (order_id, menu_item_id, quantity, preferences) VALUES (?, ?, ?, ?)";
+            Query query = session.createSQLQuery(sql);
+            query.setParameter(1, orderId);
+            query.setParameter(2, menuItemId);
+            query.setParameter(3, quantity);
+            query.setParameter(4, preferences);
+            query.executeUpdate();
+
+            transaction.commit();
+            System.out.println("✅ Item inserted into order ID: " + orderId + ", MenuItem ID: " + menuItemId);
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            System.err.println("❌ Error inserting item into order: " + e.getMessage());
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
+
+    public static void insertOrderItems(int orderId, String itemsWithPreferences) {
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            String sql = "INSERT INTO order_menu_items (order_id, menu_item_id, preferences) VALUES (?, ?, ?)";
+            Query query = session.createSQLQuery(sql);
+
+            // נניח שהפורמט של itemsWithPreferences הוא כך: "{מנה1=העדפה1, מנה2=העדפה2}"
+            String[] items = itemsWithPreferences.substring(1, itemsWithPreferences.length() - 1).split(", ");
+
+            for (String item : items) {
+                String[] keyValue = item.split("=");
+                String itemName = keyValue[0];
+                String preference = keyValue[1];
+
+                MenuItem menuItem = getMenuItemByName(itemName);
+                if (menuItem != null) {
+                    query.setParameter(1, orderId);
+                    query.setParameter(2, menuItem.getId());
+                    query.setParameter(3, preference);
+                    query.executeUpdate();
+                }
+            }
+
+            transaction.commit();
+            System.out.println("✅ Order items saved successfully for Order ID: " + orderId);
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            System.err.println("❌ Error saving order items: " + e.getMessage());
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
+
     public static Branch getBranchByName(String branchName) {
         Session session = null;
         Branch branch = null;
@@ -290,19 +487,59 @@ public class ConnectToDataBase {
             session = getSessionFactory().openSession();
             session.beginTransaction();
 
+            System.out.println("📌 Fetching branch: " + branchName);  // ✅ Debugging line
+
             branch = (Branch) session.createQuery("FROM Branch WHERE name = :branchName")
                     .setParameter("branchName", branchName)
                     .uniqueResult();
 
             session.getTransaction().commit();
+            if (branch != null) {
+                System.out.println("✅ Found branch: " + branch.getName());
+            } else {
+                System.out.println("❌ No branch found with name: " + branchName);
+            }
         } catch (Exception e) {
-            System.err.println("Error finding branch: " + e.getMessage());
+            System.err.println("❌ Error finding branch: " + e.getMessage());
         } finally {
             if (session != null) session.close();
         }
 
         return branch;
     }
+
+
+    public static List<MenuItem> getMenuItemsByBranch(String branchName) {
+        Session session = null;
+        List<MenuItem> items = null;
+
+        try {
+            session = getSessionFactory().openSession();
+            session.beginTransaction();
+
+            Query<MenuItem> query = session.createQuery(
+                    "SELECT DISTINCT mi FROM MenuItem mi JOIN mi.branches b WHERE b.name = :branchName",
+                    MenuItem.class
+            );
+            query.setParameter("branchName", branchName);
+            items = query.getResultList();
+
+            session.getTransaction().commit();
+            System.out.println("Found " + (items != null ? items.size() : 0) + " items for branch " + branchName);
+        } catch (Exception e) {
+            System.err.println("Error retrieving menu items: " + e.getMessage());
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return items;
+    }
+
 
 
     public static void initializeDatabase() throws HibernateException {

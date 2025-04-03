@@ -1,0 +1,65 @@
+/* Background with a professional restaurant image */
+.home-page {
+    -fx-background-image: url("../images/restaurant-background.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+/* Semi-transparent overlay for readability */
+.home-page::after {
+    -fx-background-color: rgba(0, 0, 0, 0.6); /* Darker overlay for better readability on dark backgrounds */
+    -fx-effect: gaussian-blur(10);
+}
+
+/* Welcome text style */
+.welcome-text {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-fill: white; /* White text for contrast */
+    -fx-text-alignment: center;
+}
+
+/* Description text style */
+.description-text {
+    -fx-font-size: 20px;
+    -fx-fill: white; /* White text for contrast */
+    -fx-text-alignment: center;
+}
+
+/* Button General Styling */
+.menu-button, .delivery-button, .reserve-button, .complaint-button {
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-text-fill: white; /* White text */
+    -fx-font-weight: bold;
+    -fx-alignment: center-left;
+}
+
+/* Button Colors */
+.menu-button {
+    -fx-background-color: #E74C3C; /* Red button */
+}
+.delivery-button {
+    -fx-background-color: #27AE60; /* Green button */
+}
+.reserve-button {
+    -fx-background-color: #F39C12; /* Yellow button */
+}
+.complaint-button {
+    -fx-background-color: #8E44AD; /* Purple button */
+}
+
+/* Button Hover Effects */
+.menu-button:hover, .delivery-button:hover, .reserve-button:hover, .complaint-button:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 8, 0, 4, 4); /* Adds shadow effect */
+}
+
+/* Button Click Effects */
+.menu-button:pressed, .delivery-button:pressed, .reserve-button:pressed, .complaint-button:pressed {
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}

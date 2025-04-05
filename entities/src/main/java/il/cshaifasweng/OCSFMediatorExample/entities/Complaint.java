@@ -2,6 +2,7 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "complaints")
@@ -29,6 +30,13 @@ public class Complaint implements Serializable {
     @JoinColumn(name = "worker_id")
     private ServiceWorker serviceWorker;
 
+    @ManyToOne
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
+
+    @Column(name = "complaint_date")
+    private LocalDate complaintDate;
+
     @Column(name = "compensation")
     private Double compensationAmount;
 
@@ -42,9 +50,11 @@ public class Complaint implements Serializable {
 
     public Complaint() {}
 
-    public Complaint(String message, String status) {
+    public Complaint(String message, String status, Branch branch, LocalDate complaintDate) {
         this.message = message;
         this.status = status;
+        this.branch = branch;
+        this.complaintDate = complaintDate;
     }
 
     // Getters and Setters
@@ -69,6 +79,14 @@ public class Complaint implements Serializable {
         return customer;
     }
 
+    public Branch getBranch() {
+        return branch;
+    }
+
+    public LocalDate getComplaintDate() {
+        return complaintDate;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -87,5 +105,13 @@ public class Complaint implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
+
+    public void setComplaintDate(LocalDate complaintDate) {
+        this.complaintDate = complaintDate;
     }
 }

@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
-
 @Entity
 @Table(name="reservation_reports")
 public class ReservationReport {
@@ -20,50 +19,32 @@ public class ReservationReport {
     @JoinColumn(name = "table_id")
     private Tables table;
 
+    @ManyToOne
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
+
     @Column(name = "date")
     private LocalDate date;
 
     @Column(name = "hour")
     private LocalTime hour;
 
+    // Getters and Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public int getId() {
-        return id;
-    }
+    public Customer getCustomer() { return customer; }
+    public void setCustomer(Customer customer) { this.customer = customer; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public Tables getTable() { return table; }
+    public void setTable(Tables table) { this.table = table; }
 
-    public Customer getCustomer() {
-        return customer;
-    }
+    public Branch getBranch() { return branch; }
+    public void setBranch(Branch branch) { this.branch = branch; }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date; }
 
-    public Tables getTable() {
-        return table;
-    }
-
-    public void setTable(Tables table) {
-        this.table = table;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public LocalTime getHour() {
-        return hour;
-    }
-
-    public void setHour(LocalTime hour) {
-        this.hour = hour;
-    }
+    public LocalTime getHour() { return hour; }
+    public void setHour(LocalTime hour) { this.hour = hour; }
 }

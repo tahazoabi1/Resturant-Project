@@ -249,6 +249,36 @@ public class SimpleServer extends AbstractServer {
 				}
 			}
 		}
+		else if (msgString.startsWith("generate report")) {
+			System.out.println("\n====== Generating Report ======");
+			try {
+				String[] parts = msgString.split("#");
+				int branchId = Integer.parseInt(parts[1]);
+				String month = parts[2];
+
+//				MonthlyReport report = ConnectToDataBase.generateMonthlyReport(branchId, month);
+//				client.sendToClient(report);
+				System.out.println("Report sent to client successfully.");
+
+			} catch (Exception e) {
+				System.err.println("Error generating report: " + e.getMessage());
+				e.printStackTrace();
+				try {
+					Warning warning = new Warning("Failed to generate report: " + e.getMessage());
+					client.sendToClient(warning);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+		else if (msgString.equals("get all branches")) {
+			try {
+				List<Branch> branches = ConnectToDataBase.getAllBranches();
+				client.sendToClient(branches);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
 	}
 

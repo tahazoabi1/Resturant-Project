@@ -114,6 +114,16 @@ public class Main extends Application {
 						e.printStackTrace();
 					}
 				});
+			case "ReportScreen":
+				Platform.runLater(() -> {
+					try {
+						setContent("ReportSelectionPage");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
+				break;
+
 		}
 	}
 

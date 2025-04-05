@@ -14,6 +14,14 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.time.YearMonth;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import org.hibernate.Session;
 
 public class ConnectToDataBase {
     private static Session session;
@@ -433,8 +441,11 @@ public class ConnectToDataBase {
 
         return complaint;
     }
-//
-//    public static MonthlyReport generateMonthlyReport(int branchId, String month) {
+    public static Session getSession() {
+        return ConnectToDataBase.getSessionFactory().openSession();
+    }
+
+//    public static Report generateMonthlyReport(int branchId, String month, String title) {
 //        EntityManager em = getEntityManager();
 //        YearMonth yearMonth = YearMonth.parse(month);
 //        LocalDate startDate = yearMonth.atDay(1);
@@ -477,7 +488,33 @@ public class ConnectToDataBase {
 //            complaintsHistogram.put((String) row[0], ((Long) row[1]).intValue());
 //        }
 //
-//        return new MonthlyReport(deliveryCount.intValue(), customersPerDay, complaintsHistogram);
+//        // Generate a text-based content summary
+//        StringBuilder contentBuilder = new StringBuilder();
+//        contentBuilder.append("Monthly Report for Branch ID: ").append(branchId)
+//                .append(", Month: ").append(month).append("\n\n");
+//        contentBuilder.append("Total Deliveries: ").append(deliveryCount).append("\n");
+//        contentBuilder.append("Customer Visits Per Day:\n");
+//
+//        customersPerDay.forEach((date, count) ->
+//                contentBuilder.append(date.toString()).append(": ").append(count).append(" visitors\n")
+//        );
+//
+//        contentBuilder.append("\nComplaint Histogram:\n");
+//        complaintsHistogram.forEach((status, count) ->
+//                contentBuilder.append(status).append(": ").append(count).append(" complaints\n")
+//        );
+//
+//        String content = contentBuilder.toString();
+//
+//        // Create and save a new Report object
+//        Report report = new Report(title, content);
+//        report.setDeliveryCount(deliveryCount.intValue());
+//        report.setVisitorsPerDay(customersPerDay);
+//        report.setComplaintsHistogram(complaintsHistogram);
+//
+//        saveReport(report);  // Save report to the database
+//
+//        return report;
 //    }
 
 }

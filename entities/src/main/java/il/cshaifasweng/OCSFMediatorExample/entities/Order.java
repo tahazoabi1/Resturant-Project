@@ -3,16 +3,18 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 import javax.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "orders")  // Make sure your table name matches exactly in the database
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "total_price", nullable = false)
-    private double totalPrice;  // Changed from BigDecimal to double
+    private double totalPrice;
 
     @Column(name = "status", nullable = false)
     private String status;
@@ -20,13 +22,16 @@ public class Order {
     @Column(name = "is_accepted", nullable = false)
     private boolean isAccepted;
 
+    @Column(name = "order_date", nullable = false)  // Mapping correctly to your database column
+    private LocalDate orderDate;
+
     @ManyToOne
     @JoinColumn(name = "branch_id", nullable = false)
-    private Branch branch;  // Foreign key to the branch
+    private Branch branch;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;  // Foreign key to the customer
+    private Customer customer;
 
     @ManyToMany
     @JoinTable(
@@ -34,16 +39,17 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_item_id")
     )
-    private List<MenuItem> menuItems = new ArrayList<>();  // List of MenuItems in this order
+    private List<MenuItem> menuItems = new ArrayList<>();
 
     public Order() {}
 
-    public Order(double totalPrice, String status, boolean isAccepted, Branch branch, Customer customer) {
+    public Order(double totalPrice, String status, boolean isAccepted, Branch branch, Customer customer, LocalDate orderDate) {
         this.totalPrice = totalPrice;
         this.status = status;
         this.isAccepted = isAccepted;
         this.branch = branch;
         this.customer = customer;
+        this.orderDate = orderDate;
     }
 
     // Getters and Setters
@@ -59,6 +65,9 @@ public class Order {
     public boolean isAccepted() { return isAccepted; }
     public void setAccepted(boolean accepted) { isAccepted = accepted; }
 
+    public LocalDate getOrderDate() { return orderDate; }
+    public void setOrderDate(LocalDate orderDate) { this.orderDate = orderDate; }
+
     public Branch getBranch() { return branch; }
     public void setBranch(Branch branch) { this.branch = branch; }
 
@@ -70,11 +79,11 @@ public class Order {
 
     public void addMenuItem(MenuItem menuItem) {
         menuItems.add(menuItem);
-        totalPrice += menuItem.getPrice();  // Add price to total price
+        totalPrice += menuItem.getPrice();
     }
 
     public void removeMenuItem(MenuItem menuItem) {
         menuItems.remove(menuItem);
-        totalPrice = Math.max(0, totalPrice - menuItem.getPrice());  // Subtract price from total price, prevent negative value
+        totalPrice = Math.max(0, totalPrice - menuItem.getPrice());
     }
 }

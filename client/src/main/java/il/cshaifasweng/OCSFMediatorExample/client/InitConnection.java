@@ -16,7 +16,6 @@ public class InitConnection {
 
     @FXML
     void initConnection(ActionEvent event) {
-        // הגדרת כתובת ופורט
         SimpleClient.newHost = this.host.getText();
         try {
             SimpleClient.newPort = Integer.parseInt(this.port.getText());
@@ -25,11 +24,9 @@ public class InitConnection {
             return;
         }
 
-        // יצירת לקוח
         Main.client = SimpleClient.getClient();
 
         try {
-            // פתיחת חיבור לשרת
             Main.client.openConnection();
             System.out.println("Connected to server at " + SimpleClient.newHost + ":" + SimpleClient.newPort);
 

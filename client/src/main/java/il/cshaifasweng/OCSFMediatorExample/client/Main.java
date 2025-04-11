@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Branch;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -19,7 +20,7 @@ import java.util.Stack;
 
 public class Main extends Application {
 
-
+	public static Branch branch = null;
 	public static User user = null;
 	private static Scene scene;
 	public static SimpleClient client;
@@ -48,6 +49,17 @@ public class Main extends Application {
 
 		// Show the stage
 		primaryStage.show();
+
+		primaryStage.setOnCloseRequest(event -> {
+			if (Main.user != null) {
+                try {
+                    SimpleClient.getClient().sendToServer("logOut#" + user.getEmail() + "#" + user.getPassword());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                System.out.println("User signed out on close.");
+			}
+		});
 	}
 
 	public static void switchScreen(String screenName) {
@@ -82,6 +94,6 @@ public class Main extends Application {
 	}
 
 
-	}
+}
 
 

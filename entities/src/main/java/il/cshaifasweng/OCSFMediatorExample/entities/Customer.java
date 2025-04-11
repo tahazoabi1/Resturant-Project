@@ -29,6 +29,11 @@ public class Customer extends User implements Serializable {
 
     public Customer() {}
 
+    @Override
+    public String getRole() {
+        return "Customer";
+    }
+
     public Customer(String name, String phoneNumber, String address, String email, String password, String preferredPaymentMethod) {
         super(name, phoneNumber, email, password);  // Call the parent constructor
         this.address = address;

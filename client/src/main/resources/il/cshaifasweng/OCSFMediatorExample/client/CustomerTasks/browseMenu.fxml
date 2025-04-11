@@ -4,7 +4,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="600.0" prefWidth="700.0" stylesheets="@../../../../CSS/browse-menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.BrowseMenuController">
+<VBox prefHeight="600.0" prefWidth="700.0" stylesheets="@../../../../../CSS/browse-menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.BrowseMenuController">
     <Label text="Branches" />
     <ListView fx:id="branchListView" />
     <Label text="Menu Items" />

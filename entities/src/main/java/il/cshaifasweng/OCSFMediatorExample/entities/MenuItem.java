@@ -7,6 +7,7 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
@@ -43,19 +44,30 @@ public class MenuItem implements Serializable {
     private String imageUrl;
 
     @ManyToMany(mappedBy = "items", fetch = FetchType.EAGER)
-    private List<Branch> branches;
+    private List<Branch> branches = new ArrayList<>();
 
     @ManyToMany(mappedBy = "menuItems")
     private List<Order> orders;
 
+    @Column(
+            name = "Delivery"
+    )
+    private Boolean isDeliveryAvailable;
+    @Column(
+            name = "ChainDish"
+    )
+    private Boolean isChainDish;
+
     public MenuItem() {
     }
 
-    public MenuItem(int id, String name, String ingredients, String preferences,Double price) {
+    public MenuItem(String name, String ingredients, String preferences,Double price, Boolean isDeliveryAvailable, Boolean isChainDish) {
         this.name = name;
         this.ingredients = ingredients;
         this.preferences = preferences;
         this.price = price;
+        this.isDeliveryAvailable = isDeliveryAvailable;
+        this.isChainDish = isChainDish;
     }
 
     public int getId() {
@@ -135,5 +147,32 @@ public class MenuItem implements Serializable {
     }
 
 
+    public void setBranches(List<Branch> branches) {
+        this.branches = branches;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Boolean getDeliveryAvailable() {
+        return isDeliveryAvailable;
+    }
+
+    public void setDeliveryAvailable(Boolean deliveryAvailable) {
+        isDeliveryAvailable = deliveryAvailable;
+    }
+
+    public Boolean getChainDish() {
+        return isChainDish;
+    }
+
+    public void setChainDish(Boolean chainDish) {
+        isChainDish = chainDish;
+    }
 }
 

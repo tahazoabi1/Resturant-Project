@@ -8,32 +8,36 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefWidth="700.0" stylesheets="@../../../../CSS/navigation.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.NavigationController">
+<BorderPane prefWidth="700.0" stylesheets="@../../../../CSS/navigation.css"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="il.cshaifasweng.OCSFMediatorExample.client.NavigationController">
 
     <!-- Sidebar Toggle Button (placed inside top section) -->
     <top>
         <VBox fx:id="navigationContainer">
             <HBox fx:id="navBar" spacing="15" styleClass="nav-bar">
-                <Button onAction="#showHomePage" styleClass="nav-button" text="Home" />
-                <Button onAction="#showMenuList" styleClass="nav-button" text="Menu List" />
-                <Button onAction="#showSelectBranch" styleClass="nav-button" text="Branches" />
+                <Button fx:id="homeBtn" onAction="#navigate" styleClass="nav-button" text="Home" />
 
                 <HBox alignment="CENTER_RIGHT" spacing="10">
-                    <Button fx:id="logInBtn" onAction="#showLogin" styleClass="nav-button" text="Log In" />
-                    <Button fx:id="registerBtn" onAction="#showRegister" styleClass="nav-button" text="Register" />
-                    <Button fx:id="logOutBtn" onAction="#showLogOut" styleClass="nav-button" text="Log Out" visible="false" />
-                    <Button fx:id="profileBtn" onAction="#showLogOut" styleClass="nav-button" text="Profile" visible="false" />
+                    <Button fx:id="logInBtn" onAction="#navigate" styleClass="nav-button" text="Log In" />
+                    <Button fx:id="registerBtn" onAction="#navigate" styleClass="nav-button" text="Register" />
+                    <Button fx:id="logOutBtn" onAction="#navigate" styleClass="nav-button" text="Log Out" visible="false" />
+                    <Button fx:id="profileBtn" onAction="#navigate" styleClass="nav-button" text="Profile" visible="false" />
                 </HBox>
 
                 <Text fx:id="welcomeState" styleClass="welcome-text" text="" />
             </HBox>
         </VBox>
     </top>
+
+    <!-- Sidebar with Toggle Button -->
     <left>
-        <VBox alignment="TOP_LEFT" styleClass="sidebar">
+        <VBox fx:id="sidebar" alignment="TOP_LEFT" styleClass="sidebar">
             <ToggleButton fx:id="toggleButton" onAction="#toggleNavigationBar" styleClass="toggle-button" text="☰" />
         </VBox>
     </left>
+
     <!-- Content Area -->
     <center>
         <StackPane fx:id="contentArea" />

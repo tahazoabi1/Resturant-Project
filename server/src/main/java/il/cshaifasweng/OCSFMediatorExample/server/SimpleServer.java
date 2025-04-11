@@ -197,6 +197,45 @@ public class SimpleServer extends AbstractServer {
 			System.out.println("====== End Log in ======\n");
 		}
 
+		else if (msgString.startsWith("logOut")) {
+			System.out.println("\n====== Processing LogOut ======");
+
+			try {
+				String[] parts = msgString.split("#");
+				if (parts.length != 3) {
+					throw new IllegalArgumentException("Invalid email or password format");
+				}
+
+				String email = parts[1];
+				String password = parts[2];
+
+				System.out.println("Trying to log out...");
+
+				// Log out the user by updating the database
+				User user = ConnectToDataBase.LogOut(email, password);
+
+				if (user != null) {
+					// Successfully logged out
+					System.out.println("Log Out Successfully for user: " + email);
+				} else {
+					// Error logging out the user (e.g., invalid credentials)
+					System.out.println("Error: Unable to log out. Invalid credentials or user not logged in.");
+				}
+
+			} catch (Exception e) {
+				System.err.println("Error Log Out: " + e.getMessage());
+				e.printStackTrace();
+				try {
+					Warning warning = new Warning("Failed to log out: " + e.getMessage());
+					client.sendToClient(warning);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+			System.out.println("====== End Log Out ======\n");
+		}
+
+
 		else if (msgString.startsWith("Rigister Customer")) {
 			System.out.println("\n====== Processing Rigister Customer ======");
 			try {
@@ -232,6 +271,44 @@ public class SimpleServer extends AbstractServer {
 			}
 			System.out.println("====== End Log in ======\n");
 		}
+
+		else if (msgString.startsWith("additem")) {
+			System.out.println("\n====== Processing adding item ======");
+			try {
+				String[] parts = msgString.split("#");
+				if (parts.length != 8) {
+					throw new IllegalArgumentException("Invalid Email or Password format");
+				}
+
+				String name = parts[1];
+				String ingredients = parts[2];
+				String prefrences = parts[3];
+				double price = Double.parseDouble(parts[4]);
+				Boolean IsChainAvailable = Boolean.valueOf(parts[5]);
+				Boolean IsDeliveryAvailable = Boolean.valueOf(parts[6]);
+				String Branch = parts[7]; // 1@1@1
+
+				System.out.println("adding item...");
+
+				// Update in database
+
+				ConnectToDataBase.addMenuItem(name, ingredients, prefrences, price, IsChainAvailable, IsDeliveryAvailable, Branch);
+
+				client.sendToClient("Register Completed");
+
+			} catch (Exception e) {
+				System.err.println("Error Log in" + e.getMessage());
+				e.printStackTrace();
+				try {
+					Warning warning = new Warning("Failed to Log in " + e.getMessage());
+					client.sendToClient(warning);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+			System.out.println("====== End Log in ======\n");
+		}
+
 		else if (msgString.startsWith("get menu items for branch#")) {
 			System.out.println("\n====== Processing Get Menu Items for Branch ======");
 
@@ -259,7 +336,66 @@ public class SimpleServer extends AbstractServer {
 			}
 		}
 
+		else if (msgString.startsWith("#deleteMenuItem:")) {
+			try {
+				int id = Integer.parseInt(msgString.split(":")[1]);
+				ConnectToDataBase.removeItem(id);
+				System.out.println("Nice! Deleted Item Successfully");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
+//		else if (msgString.startsWith("#updateMenuItemType:")) {
+//			String[] parts = msgString.split(":");
+//			if (parts.length == 2) {
+//				int itemId = Integer.parseInt(parts[1].trim());
+//
+//				// Call the method to update the type (chainDish) of the menu item
+//				ConnectToDataBase.updateTypeItem(itemId);
+//
+//				// Send a success message back to the client (optional)
+//				System.out.println("Menu item type updated for item ID: " + itemId);
+//			} else {
+//				System.err.println("Message format is incorrect.");
+//			}
+//		}
+		if (msgString.startsWith("#updateMenuItemType")) {
+			try {
+				int id = Integer.parseInt(msgString.split(":")[1]);
+				ConnectToDataBase.updateTypeItem(id);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		else if (msgString.startsWith("#updateIngredients:")) {
+			String[] parts = msgString.split(":");
+			if (parts.length == 2) {
+				// Extract the item ID and ingredients
+				String itemIdAndIngredients = parts[1];
+
+				// Split by the comma to get ID and ingredients
+				String[] itemParts = itemIdAndIngredients.split(",", 2);
+				if (itemParts.length == 2) {
+					try {
+						int itemId = Integer.parseInt(itemParts[0].trim());
+						String newIngredients = itemParts[1].trim();
+
+						// Call method to update ingredients in the database
+						ConnectToDataBase.updateIngredients(itemId, newIngredients);
+
+						// Send a success message back to the client (optional)
+						System.out.println("Ingredients updated for item ID: " + itemId);
+
+					} catch (NumberFormatException e) {
+						System.err.println("Invalid ID format in the message.");
+					}
+				} else {
+					System.err.println("Message format is incorrect.");
+				}
+			}
+		}
 		else if (msgString.startsWith("add item to order#")) {
 			System.out.println("\n====== Adding Item to Order with Details ======");
 

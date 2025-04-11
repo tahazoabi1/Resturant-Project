@@ -35,6 +35,8 @@ public class ConnectToDataBase {
             configuration.addAnnotatedClass(Tables.class);
             configuration.addAnnotatedClass(User.class);
             configuration.addAnnotatedClass(Worker.class);
+            configuration.addAnnotatedClass(Request.class);
+            configuration.addAnnotatedClass(NetworkManager.class);
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties())
                     .build();
@@ -540,7 +542,49 @@ public class ConnectToDataBase {
         return items;
     }
 
+    public static void addMenuItem(String name, String ingredients, String preferences, Double price,
+                                   Boolean IsChainAvailable, Boolean IsDeliveryAvailable,
+                                   String branchesStr) {
+        Session session = null;
+        Transaction transaction = null;
 
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            MenuItem menuitem = new MenuItem(name, ingredients, preferences, price, IsDeliveryAvailable, IsChainAvailable);
+
+            if (branchesStr != null && !branchesStr.isEmpty()) {
+                String[] branchIds = branchesStr.split("@");
+                for (String idStr : branchIds) {
+                    try {
+                        int branchId = Integer.parseInt(idStr.trim());
+                        Branch branch = session.get(Branch.class, branchId);
+                        if (branch != null) {
+                            menuitem.getBranches().add(branch);
+                            branch.getItems().add(menuitem);
+                        } else {
+                            System.err.println("⚠️ Branch not found with ID: " + branchId);
+                        }
+                        session.save(branch);
+                    } catch (NumberFormatException e) {
+                        System.err.println("⚠️ Invalid branch ID: " + idStr);
+                    }
+                }
+            }
+
+            session.save(menuitem);
+            transaction.commit();
+            System.out.println("✅ Dish with branches added successfully!");
+
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            System.err.println("❌ Error adding dish: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+        }
+    }
 
     public static void initializeDatabase() throws HibernateException {
         Session session = null;
@@ -564,10 +608,29 @@ public class ConnectToDataBase {
         }
     }
 
-    public static User Login(String email, String password) {
+    public static void removeItem(int id) {
+        session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        MenuItem itemToRemove = session.get(MenuItem.class, id);
+
+        if (itemToRemove != null) {
+            // Manually disassociate the item from each branch
+            for (Branch branch : itemToRemove.getBranches()) {
+                branch.getItems().remove(itemToRemove);
+            }
+            // Remove the item itself
+            session.remove(itemToRemove);
+        }
+
+        tx.commit();
+        session.close();
+    }
+
+    public static User LogOut(String email, String password) {
         Session session = null;
         Transaction transaction = null;
         User user = null;
+
         try {
             // Get the session from the session factory
             session = getSessionFactory().openSession();
@@ -583,9 +646,65 @@ public class ConnectToDataBase {
                     .uniqueResult();
 
             if (user != null) {
-                // User found, return user information (or process as needed)
-                System.out.println("Login successful! Welcome, " + user.getName());
-                user.signIn();
+                // User found, proceed to log them out by setting is_signed_in to false
+                user.signOut(); // Mark the user as logged out
+                session.update(user); // Update the user in the database
+                System.out.println("Logout successful for user: " + email);
+            } else {
+                System.out.println("Error: No user found with the provided email and password.");
+            }
+
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return user;
+    }
+
+    public static User Login(String email, String password) {
+        Session session = null;
+        Transaction transaction = null;
+        User user = null;
+
+        try {
+            // Get the session from the session factory
+            session = getSessionFactory().openSession();
+
+            // Start a transaction
+            transaction = session.beginTransaction();
+
+            // Query to find the user by email and password
+            String hql = "FROM User u WHERE u.email = :email AND u.password = :password";
+            user = session.createQuery(hql, User.class)
+                    .setParameter("email", email)
+                    .setParameter("password", password)
+                    .uniqueResult();
+
+            if (user != null) {
+                // User found, check if they are already signed in
+                if (user.isSignedIn()) {
+                    // User is already signed in
+                    System.out.println("Cannot log in. The user is already logged in.");
+                } else {
+                    // User is not signed in, proceed with login
+                    user.signIn();  // Set signedIn flag to true
+                    session.update(user);  // Update user in the database
+                    session.flush();  // Ensure the update is committed to the database
+
+                    // Re-fetch the user to make sure we have the latest state
+                    user = session.get(User.class, user.getId());  // Or use the appropriate identifier
+
+                    System.out.println("Login successful! Welcome, " + user.getName());
+                    return user;
+                }
             } else {
                 // No user found with the provided email and password
                 System.out.println("Error: No user found with the provided email and password.");
@@ -605,6 +724,55 @@ public class ConnectToDataBase {
                 session.close();
             }
         }
-        return user;
+        return null;
+    }
+
+    public static void updateIngredients(int itemId, String newIngredients) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        try {
+            // Retrieve the MenuItem object by ID
+            MenuItem itemToUpdate = session.get(MenuItem.class, itemId);
+
+            if (itemToUpdate != null) {
+                // Update the ingredients
+                itemToUpdate.setIngredients(newIngredients);
+
+                // Save the changes to the database
+                session.update(itemToUpdate);
+
+                // Commit the transaction
+                tx.commit();
+
+                System.out.println("Ingredients for item ID " + itemId + " updated successfully.");
+            } else {
+                System.err.println("Menu item with ID " + itemId + " not found.");
+            }
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();  // Rollback in case of error
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();  // Ensure the session is closed even in case of error
+        }
+    }
+
+    public static void updateTypeItem(int itemId) {
+        session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        // Fetch the menu item by ID
+        MenuItem itemToUpdate = session.get(MenuItem.class, itemId);
+
+        if (itemToUpdate != null) {
+            // Toggle the chainDish value
+            itemToUpdate.setChainDish(!itemToUpdate.getChainDish());
+            session.update(itemToUpdate);
+        }
+
+        tx.commit();
+        session.close();
     }
 }

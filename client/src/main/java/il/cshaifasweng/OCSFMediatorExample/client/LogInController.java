@@ -3,6 +3,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.Customer;
 import il.cshaifasweng.OCSFMediatorExample.entities.Hostess;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -49,27 +50,47 @@ public class LogInController {
 
     @Subscribe
     public void authenticateUser(User user) {
-        Main.user = user;
-        if (user!=null) {
-            if (user instanceof Customer){
-                javafx.application.Platform.runLater(() -> {
-                    NavigationController.getInstance().updateLogInStatus();
-                    NavigationController.getInstance().loadPage("home-page");
-                    showAlert("Success", "Logged in successfully!");
-
-                });
-            }
-            else if (user instanceof Hostess){
-                javafx.application.Platform.runLater(() -> {
-                    NavigationController.getInstance().updateLogInStatus();
-                    NavigationController.getInstance().loadPage("home-page");
-                    showAlert("Success", "Logged in successfully!");
-                });
-            }
-        }
-        else{
+        if(user!= null) {
+            Main.user = user;
+            String role = (Main.user != null) ? Main.user.getRole() : "";
+            user.signIn();
             javafx.application.Platform.runLater(() -> {
-                showAlert("Invalid", "Something Worng in email and password");
+                NavigationController.getInstance().updateLogInStatus();
+                switch (role) {
+                    case "Customer":
+                        NavigationController.getInstance().loadPage("HomePages/customer-home");
+                        showAlert("Success", "Logged in successfully!");
+                        break;
+                    case "Dietitian":
+                        NavigationController.getInstance().loadPage("HomePages/dietitian-home");
+                        showAlert("Success", "Logged in successfully!");
+                        break;
+                    case "Hostess":
+                        NavigationController.getInstance().loadPage("HomePages/hostess-home");
+                        showAlert("Success", "Logged in successfully!");
+                        break;
+                    case "Manager":
+                        NavigationController.getInstance().loadPage("HomePages/branch-manager-home");
+                        showAlert("Success", "Logged in successfully!");
+                        break;
+                    case "NetworkManager":
+                        NavigationController.getInstance().loadPage("HomePages/network-manager-home");
+                        showAlert("Success", "Logged in successfully!");
+                        break;
+                    case "ServiceWorker":
+                        NavigationController.getInstance().loadPage("HomePages/service-worker-home");
+                        showAlert("Success", "Logged in successfully!");
+                        break;
+                    default:
+                        NavigationController.getInstance().loadPage("first-page");
+                        showAlert("Notice", "Role not recognized, redirecting to home.");
+                        break;
+                }
+            });
+        }
+        else {
+            javafx.application.Platform.runLater(() -> {
+                showAlert("Invalid", "Something went wrong with email or password. or the user logged in in another client");
             });
         }
     }

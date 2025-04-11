@@ -2,16 +2,15 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @DiscriminatorValue("ManagerWorker")
 public class Manager extends Worker {
-    //menu
-    @OneToMany(mappedBy = "manager")
-    private List<Request> requests;
 
-
+    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Request> requests = new ArrayList<>();
 
     public Manager() {}
 
@@ -19,8 +18,8 @@ public class Manager extends Worker {
         super(salary, branch, name, phoneNumber, email, password);
     }
 
-    public List<Request> getRequests() {
-        return requests;
+    @Override
+    public String getRole() {
+        return "Manager";
     }
-
 }

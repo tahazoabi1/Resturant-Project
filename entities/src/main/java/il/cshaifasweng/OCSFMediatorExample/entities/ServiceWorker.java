@@ -30,4 +30,9 @@ public class ServiceWorker extends Worker {
     public void addComplaint(Complaint complaint) {
         complaints.add(complaint);
     }
+
+    @Override
+    public String getRole() {
+        return "ServiceWorker";
+    }
 }

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane stylesheets="@../../../../CSS/hostess-selection.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.HostessSelectionController">
+<AnchorPane stylesheets="@../../../../../CSS/hostess-selection.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.HostessSelectionController">
     <VBox prefHeight="550.0" prefWidth="650.0">
         <Label fx:id="branchNameLabel" text="Branch Name" />
 

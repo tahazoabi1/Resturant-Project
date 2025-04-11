@@ -2,6 +2,7 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,13 +34,13 @@ public class Branch implements Serializable {
     @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY)
     private List<Worker> workers;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "branch_menuitem",
             joinColumns = @JoinColumn(name = "branch_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_item_id")
     )
-    private List<MenuItem> items;
+    private List<MenuItem> items = new ArrayList<>();;
 
     @OneToMany(mappedBy = "branch", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Tables> tables;

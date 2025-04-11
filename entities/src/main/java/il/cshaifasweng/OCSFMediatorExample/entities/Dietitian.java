@@ -22,6 +22,11 @@ public class Dietitian extends Worker {
     public void sendRequest(MenuItem item) {
         System.out.println("Sending request for item: " + item.getName());
     }
+
+    @Override
+    public String getRole() {
+        return "Dietitian";
+    }
 }
 
 

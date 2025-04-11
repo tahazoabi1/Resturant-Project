@@ -40,9 +40,12 @@ public class SelectBranchController {
         selectButton.setOnAction(event -> {
             if (selectedBranch != null) {
                 try {
-                    String msg = "create order#" + selectedBranch.getName();
-                    System.out.println("📤 Sending to server: " + msg);
-                    SimpleClient.getClient().sendToServer(msg);
+                    Main.branch = selectedBranch;
+                    System.out.println(Main.branch.getName());
+                    NavigationController.getInstance().loadPage("SelectItems");
+//                    String msg = "create order#" + selectedBranch.getName();
+//                    System.out.println("📤 Sending to server: " + msg);
+//                    SimpleClient.getClient().sendToServer(msg);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

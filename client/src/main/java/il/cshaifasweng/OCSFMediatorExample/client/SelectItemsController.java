@@ -28,12 +28,17 @@ public class SelectItemsController {
     @FXML
     private Button addItemButton, confirmOrderButton; // Buttons for adding and confirming order
 
+    private MenuItem selectedItem;
+    private List<MenuItem> Items;
     private ObservableList<String> menuItems = FXCollections.observableArrayList(); // Observable list for menu
     private List<String> selectedItems = new ArrayList<>(); // Stores selected items
-    private String branchName; // Store selected branch
+    private String branchName = Main.branch.getName(); // Store selected branch
 
     public void initialize() {
-        itemsListView.setItems(menuItems); // Link ListView to observable list
+        Platform.runLater(() -> {
+                    itemsListView.setItems(menuItems); // Link ListView to observable list
+                });
+        loadItemsForBranch(branchName);
         EventBus.getDefault().register(this); // Register EventBus to receive messages from the server
     }
 
@@ -42,6 +47,7 @@ public class SelectItemsController {
     public void onMenuItemsReceived(List<MenuItem> items) {
         Platform.runLater(() -> {
             menuItems.clear();
+            this.Items = items;
             for (MenuItem item : items) {
                 menuItems.add(item.getName()); // Display item names
             }
@@ -49,54 +55,39 @@ public class SelectItemsController {
         });
     }
 
-    // ✅ When a branch is selected, request menu items
-    public void setSelectedBranch(String branchName) {
-        this.branchName = branchName; // Store branch
-        System.out.println("✅ Branch selected: " + branchName);
-        loadItemsForBranch(branchName);
-    }
-
     public void loadItemsForBranch(String branchName) {
         try {
             SimpleClient.getClient().sendToServer("get menu items for branch#" + branchName);
-            System.out.println("✅ Sent request for menu items of branch: " + branchName);
         } catch (IOException e) {
             System.err.println("❌ Failed to send request: " + e.getMessage());
         }
     }
 
-    // ✅ Add selected item to order
-    @FXML
-    private void handleAddItem(ActionEvent event) {
-        String selectedItem = itemsListView.getSelectionModel().getSelectedItem();
 
-        if (selectedItem == null) {
-            showAlert("No Item Selected", "Please select an item.", Alert.AlertType.WARNING);
+    @FXML
+    private void selectItem() {
+        // Get the name of the selected item from the ListView
+        String selectedItemName = itemsListView.getSelectionModel().getSelectedItem();
+
+        if (selectedItemName == null) {
+            showAlert("No Item Selected", "Please select an item from the list.", Alert.AlertType.WARNING);
             return;
         }
 
-        selectedItems.add(selectedItem); // Add to order
-        showAlert("Item Added", selectedItem + " added to your order.", Alert.AlertType.INFORMATION);
-    }
+        // Find the MenuItem object that matches the selected name
+        for (MenuItem item : Items) {
+            if (item.getName().equals(selectedItemName)) {
+                selectedItem = item; // Save the selected MenuItem object
+                System.out.println("Selected item: " + selectedItem.getName());
+                break; // Exit the loop once the item is found
+            }
+        }
 
-    // ✅ Send order to server
-    @FXML
-    private void handleConfirmOrder(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomizeItems.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) confirmOrderButton.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (selectedItem != null) {
+            // Show confirmation or update UI if necessary
+            showAlert("Item Selected", selectedItem.getName() + " is now selected.", Alert.AlertType.INFORMATION);
         }
     }
-
-
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

@@ -63,4 +63,6 @@ public abstract class User implements Serializable {
     public boolean isSignedIn() {
         return isSignedIn;
     }
+
+    public abstract String getRole();
 }

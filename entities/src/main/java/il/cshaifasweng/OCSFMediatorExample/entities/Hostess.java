@@ -18,5 +18,9 @@ public class Hostess extends Worker {
     public Hostess() {
     }
 
+    @Override
+    public String getRole() {
+        return "Hostess";
+    }
 }
 

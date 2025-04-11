@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20" alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.NetworkManagerHomeController">
+    <Label text="Welcome, Network Manager!" style="-fx-font-size: 24;" />
+    <Button text="All Reports" onAction="#handleAllReports"/>
+    <Button text="Approve Offers" onAction="#handleApproveOffers"/>
+</VBox>

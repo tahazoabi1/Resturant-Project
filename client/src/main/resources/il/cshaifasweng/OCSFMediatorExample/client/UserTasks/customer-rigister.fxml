@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="center" hgap="10" stylesheets="@../../../../CSS/custumer-rigister.css" vgap="10" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.customerRegisterController">
+<GridPane alignment="center" hgap="10" stylesheets="@../../../../../CSS/custumer-rigister.css" vgap="10" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.customerRegisterController">
 
     <padding>
         <Insets bottom="20" left="20" right="20" top="20" />

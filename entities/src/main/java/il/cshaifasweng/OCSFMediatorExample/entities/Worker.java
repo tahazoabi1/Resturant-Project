@@ -37,4 +37,10 @@ public class Worker extends User implements Serializable {
     public void setBranch(Branch branch) {
         this.branch = branch;
     }
+
+    @Override
+    public String getRole() {
+        return "Worker";
+    }
+
 }

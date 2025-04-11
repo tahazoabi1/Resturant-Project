@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SelectItemsController">
+    <VBox alignment="CENTER" spacing="20">
+        <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Select Items" />
+
+        <HBox alignment="CENTER">
+            <ListView fx:id="itemsListView" prefHeight="400" prefWidth="400" />
+        </HBox>
+
+        <HBox alignment="CENTER" spacing="10">
+            <Button fx:id="addItemButton" onAction="#selectItem" text="Select Item" />
+        </HBox>
+    </VBox>
+</AnchorPane>

@@ -1,6 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -12,35 +11,29 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
+import javafx.util.Duration;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 import java.io.IOException;
+import java.util.HashMap;
+
+import static il.cshaifasweng.OCSFMediatorExample.client.Main.user;
 
 public class NavigationController {
 
-
-
     private static NavigationController instance;
+
     @FXML
-    public Button profileBtn;
+    private Button profileBtn, logInBtn, logOutBtn, registerBtn;
 
     @FXML
     private Text welcomeState;
 
     @FXML
-    private StackPane contentArea; // The dynamic content container
-
-    @FXML
-    private Button logInBtn;
-
-    @FXML
-    private Button logOutBtn;
-
-    @FXML
-    private Button registerBtn;
-
+    private StackPane contentArea; // Dynamic content container
 
     @FXML
     private VBox navigationContainer;
@@ -52,12 +45,11 @@ public class NavigationController {
     private ToggleButton toggleButton;
 
     private boolean isCollapsed = false;
-
-    private boolean isSidebarCollapsed = true;
+    private HashMap<String, Parent> pageCache = new HashMap<>(); // Page caching
 
     // Constructor
     public NavigationController() {
-        instance = this;  // Set the instance on object creation
+        instance = this;
     }
 
     @FXML
@@ -83,49 +75,36 @@ public class NavigationController {
         isCollapsed = !isCollapsed;
     }
 
-    @FXML
-    private void showMenuList() {
-        loadPage("browseMenu");
-    }
-
-    @FXML
-    private void showSelectBranch() {
-        loadPage("SelectBranch");
-    }
-
-    @FXML
-    private void showLogin() {
-        loadPage("log-in");
-    }
-
-    @FXML
-    private void showRegister() {
-        loadPage("customer-rigister");
-    }
-
-    @FXML
-    private void showHomePage() {
-        loadPage("home-page");
-    }
-
-    @FXML
-    private void showLogOut() {
-        Main.user.signOut();
-        Main.user = null;
-        updateLogInStatus();
-        loadPage("first-page");
+    private void resetDynamicUI() {
+        // Remove any dynamically added buttons or elements
+        navBar.getChildren().removeIf(node -> node.getUserData() != null && node.getUserData().equals("dynamic"));
     }
 
     @FXML
     public void loadPage(String pageName) {
         try {
-            // Load the FXML page
-            Parent page = FXMLLoader.load(Main.class.getResource((pageName + ".fxml")));
+            // Clear the content area to remove previous content
+            contentArea.getChildren().clear();
 
-            // Set the loaded page to the content area (replace only the center content)
+            resetDynamicUI();
+
+
+            // Load the new page
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(pageName + ".fxml"));
+            Parent page = loader.load();
+
+            // Add the new page to the content area
             contentArea.getChildren().setAll(page);
+
+            // Optional: Add fade transition for a smooth effect
+            FadeTransition fadeTransition = new FadeTransition(Duration.millis(300), contentArea);
+            fadeTransition.setFromValue(0.0);
+            fadeTransition.setToValue(1.0);
+            fadeTransition.play();
+
+            // Ensure global CSS is applied once
             Scene currentScene = contentArea.getScene();
-            if (currentScene != null) {
+            if (currentScene != null && currentScene.getStylesheets().isEmpty()) {
                 currentScene.getStylesheets().add(getClass().getResource("/CSS/global-file.css").toExternalForm());
             }
 
@@ -134,9 +113,126 @@ public class NavigationController {
         }
     }
 
-    // Get instance method (optional)
-    public static NavigationController getInstance() {
-        return instance;
+    @FXML
+    private void navigate(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+        String role = (user != null) ? user.getRole() : "";
+
+        // Handle pre-defined buttons
+        switch (clickedButton.getId()) {
+
+            case "logOutBtn":
+                handleLogout();
+                break;
+            case "menuBtn":
+                loadPage("CustomerTasks/SelectItems");
+                break;
+            case "registerBtn":
+                loadPage("UserTasks/customer-register");
+                break;
+            case "homeBtn":
+                if (user == null) {
+                    loadPage("first-page");
+                } else {
+                    switch (role) {
+                        case "Customer":
+                            loadPage("HomePages/customer-home");
+                            break;
+                        case "Dietitian":
+                            loadPage("HomePages/dietitian-home");
+                            break;
+                        case "Hostess":
+                            loadPage("HomePages/hostess-home");
+                            break;
+                        case "Manager":
+                            loadPage("HomePages/branch-manager-home");
+                            break;
+                        case "NetworkManager":
+                            loadPage("HomePages/network-manager-home");
+                            break;
+                        case "ServiceWorker":
+                            loadPage("HomePages/service-worker-home");
+                            break;
+                        default:
+                            loadPage("first-page"); // fallback
+                    }
+                }
+                break;
+            case "profileBtn":
+                loadPage("UserTasks/profile");
+                break;
+            case "cartBtn":
+                loadPage("CustomerTasks/cart");
+                break;
+            case "reservationBtn":
+                loadPage("CustomerTasks/reservations");
+                break;
+            case "logInBtn":
+                loadPage("UserTasks/log-in");
+                break;
+
+            case "orderHistoryBtn":
+                loadPage("CustomerTasks/order-history");
+                break;
+            case "complaintBtn":
+                loadPage("CustomerTasks/submit-complaint");
+                break;
+            case "cancelOrderBtn":
+                loadPage("CustomerTasks/cancel-order");
+                break;
+            case "walkinBtn":
+                loadPage("CustomerTasks/walk-in-assignment");
+                break;
+            case "occupancyMapBtn":
+                loadPage("HostessTasks/occupancy-map");
+                break;
+            case "branchReportBtn":
+                loadPage("ManagerTasks/branch-report");
+                break;
+            case "manageTablesBtn":
+                loadPage("ServiceTasks/manage-tables");
+                break;
+            case "branchComplaintsBtn":
+                loadPage("ServiceTasks/branch-complaints");
+                break;
+            case "allReportsBtn":
+                loadPage("ManagerTasks/all-reports");
+                break;
+            case "createReportBtn":
+                loadPage("ManagerTasks/create-report");
+                break;
+            case "approveOffersBtn":
+                loadPage("NetworkManagerTasks/approve-offers");
+                break;
+            case "editMenuBtn":
+                loadPage("DietitianTasks/edit-menu");
+                break;
+            case "statusBtn":
+                loadPage("DietitianTasks/status-of-changes");
+                break;
+            case "openComplaintsBtn":
+                loadPage("ServiceTasks/open-complaints");
+                break;
+            case "complaintsHistoryBtn":
+                loadPage("CustomerTasks/complaints-history");
+                break;
+            default:
+                System.out.println("Unknown button ID: " + clickedButton.getId());
+                break;
+        }
+    }
+
+    @FXML
+    private void handleLogout() {
+        user.signOut();
+        try {
+            SimpleClient.getClient().sendToServer("logOut#" + user.getEmail() + "#" + user.getPassword());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        user = null;
+        updateLogInStatus();
+        loadPage("HomePages/home-page");
     }
 
     @FXML
@@ -144,48 +240,79 @@ public class NavigationController {
         instance = this;
         toggleNavigationBar();
         Platform.runLater(() -> loadPage("first-page"));
+        updateLogInStatus();
     }
 
     public void updateLogInStatus() {
-        if (Main.user == null) {
-            logInBtn.setVisible(true);
-            logInBtn.setManaged(true);
+        boolean isLoggedIn = (user != null);
 
-            registerBtn.setVisible(true);
-            registerBtn.setManaged(true);
+        logInBtn.setVisible(!isLoggedIn);
+        logInBtn.setManaged(!isLoggedIn);
 
-            logOutBtn.setVisible(false);
-            logOutBtn.setManaged(false);
+        registerBtn.setVisible(!isLoggedIn);
+        registerBtn.setManaged(!isLoggedIn);
 
-            profileBtn.setManaged(false);
-            profileBtn.setVisible(false);
+        logOutBtn.setVisible(isLoggedIn);
+        logOutBtn.setManaged(isLoggedIn);
 
-            welcomeState.setText("");
-        } else {
-            logInBtn.setVisible(false);
-            logInBtn.setManaged(false);
+        profileBtn.setManaged(isLoggedIn);
+        profileBtn.setVisible(isLoggedIn);
 
-            registerBtn.setVisible(false);
-            registerBtn.setManaged(false);
+        welcomeState.setText(isLoggedIn ? user.getName() : "");
 
-            logOutBtn.setVisible(true);
-            logOutBtn.setManaged(true);
+        // 🧠 Clear previous dynamic buttons (if re-logging or switching users)
+        navBar.getChildren().removeIf(node -> node.getUserData() != null && node.getUserData().equals("dynamic"));
 
-            profileBtn.setManaged(true);
-            profileBtn.setVisible(true);
+        if (!isLoggedIn) return;
 
+        String role = (user != null) ? user.getRole() : ""; // You may need to adjust based on your actual User class
 
-            welcomeState.setText(Main.user.getName());
+        switch (role) {
+            case "Customer":
+                addButton("Menu", "menuBtn");
+                addButton("Branch", "branchBtn");
+                addButton("Reservations", "reservationBtn");
+                addButton("MyOrders", "orderHistoryBtn");
+                addButton("Complain", "complaintBtn");
+                break;
+            case "Hostess":
+                addButton("Reserve", "walkinBtn");
+                addButton("Map", "occupancyMapBtn");
+                addButton("LogOut", "logOutBtn");
+                break;
+            case "Manager":
+                addButton("Reports", "branchReportBtn");
+                addButton("Complaints", "branchComplaintsBtn");
+                break;
+            case "NetworkManager":
+                addButton("Reports", "allReportsBtn");
+                addButton("Approve Offers", "approveOffersBtn");
+                break;
+            case "Dietitian":
+                addButton("Edit", "editMenuBtn");
+                addButton("Status", "statusBtn");
+                break;
+            case "ServiceWorker":
+                addButton("Open Complaints", "openComplaintsBtn");
+                addButton("Complaints History", "complaintsHistoryBtn");
+                break;
+            default:
+                addButton("Menu", "menuBtn");
+                addButton("Branch", "branchBtn");
+                break;
         }
     }
 
-
-    public void showCart(ActionEvent event) {
+    private void addButton(String text, String id) {
+        Button button = new Button(text);
+        button.setId(id);
+        button.getStyleClass().add("nav-button");
+        button.setOnAction(this::navigate);
+        button.setUserData("dynamic");
+        navBar.getChildren().add(button);
     }
 
-    public void showReservations(ActionEvent event) {
-    }
-
-    public void showProfilePage(ActionEvent event) {
+    public static NavigationController getInstance() {
+        return instance;
     }
 }
